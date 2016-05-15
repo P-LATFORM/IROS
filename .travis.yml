@@ -42,7 +42,6 @@ language: c
 #			- sudo apt-get install -qq [packages list]
 ###############################################################################
 before_install:
-    - sudo apt-get update
 
 ###############################################################################
 # You can run custom commands before the script
@@ -101,8 +100,7 @@ install:
 #	script: bundle exec rake build && bundle exec rake builddoc
 #	This example (note the &&) fails immediately when bundle exec rake build fails.
 ###############################################################################
-script: 
-    - make
+script: make
 
 ###############################################################################
 # Deploying your Code #
