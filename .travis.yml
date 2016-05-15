@@ -1,0 +1,186 @@
+## 
+## travis.yml 
+##
+## YAML Configuration file for GITHUB - TravisCI integration
+## 
+## See link for details. (Comments are also copied from link)
+##	https://docs.travis-ci.com/user/customizing-the-build/
+##
+##
+## The complete build lifecycle
+## 	1- Install apt addons
+## 	2- before_install
+## 	3- install
+## 	4- before_script
+## 	5- script
+## 	6- after_success or after_failure
+## 	7- OPTIONAL before_deploy
+## 	8- OPTIONAL deploy
+## 	9- OPTIONAL after_deploy
+## 	10- after_script
+
+################################################################################
+# Meta data for Doxygen
+################################################################################
+meta: | 
+     YAML Configuration file for GITHUB - TravisCI integration
+
+
+notifications:
+  email: false
+
+language: c
+
+###############################################################################
+# You can run custom commands before the installation. 
+#
+#	You can install additional dependencies required by your project
+#	such as Ubuntu packages or custom services.
+#
+# 	Installing Packages Using apt 
+#			- sudo apt-get update -qq
+#			- sudo apt-get install -qq [packages list]
+###############################################################################
+before_install:
+    - sudo apt-get update
+
+###############################################################################
+# You can run custom commands before the script
+#
+###############################################################################
+before_script:
+
+###############################################################################
+# You can run custom commands after the script
+#
+###############################################################################
+after_script:
+
+###############################################################################
+# You can perform additional steps when your build succeeds or fails 
+# using the following. 
+#
+#	You can access the build result using the $TRAVIS_TEST_RESULT 
+#	environment variable.
+###############################################################################
+after_success:
+
+after_failure:
+
+###############################################################################
+# Customizing the Installation Step
+#
+# 	The default dependency installation commands depend on the project 
+#	language. You can specify your own script to run to install whatever
+#	dependencies your project requires in travis.yml
+#
+# 	When using custom scripts they should be executable (for example, 
+#	using chmod +x) and contain a valid shebang line such as /usr/bin/env
+#	sh, /usr/bin/env ruby, or /usr/bin/env python.
+#
+#	You can also provide multiple steps, for instance to install both ruby
+#	and node dependencies:
+#		install:
+#		  - bundle install --path vendor/bundle
+#		  - npm install
+#
+#	You can skip the installation step entirely by adding the following 
+#	to your .travis.yml
+#		install: true
+###############################################################################
+install:
+
+###############################################################################
+# You can overwrite the default build step
+#
+# 	You can specify multiple script commands as well:
+#
+#	When one of the build commands returns a non-zero exit code, the Travis
+# 	CI build runs the subsequent commands as well, and accumulates the build result.
+#
+#	script: bundle exec rake build && bundle exec rake builddoc
+#	This example (note the &&) fails immediately when bundle exec rake build fails.
+###############################################################################
+script: 
+    - make
+
+###############################################################################
+# Deploying your Code #
+#
+# 	An optional phase in the build lifecycle is deployment. When deploying
+# 	files to a provider, prevent Travis CI from resetting your working
+#	directory and deleting all changes made during the build 
+#	( git stash --all) by adding skip_cleanup to your .travis.yml:
+###############################################################################
+deploy:
+#	skip_cleanup: true
+
+###############################################################################
+# Building Specific Branches
+#
+#	# blacklist
+#	branches:
+#  		except:
+#    		- legacy
+#    		- experimental
+#
+# 	whitelist
+#	branches:
+#  		only:
+#    		- master
+#    		- stable
+###############################################################################
+
+###############################################################################
+# Build Matrix
+#
+# 	When you combine the three main configuration options of Runtime, 
+#	Environment and Exclusions/Inclusions you have a matrix of all possible
+# 	combinations.
+#
+#	Below is an example configuration for a build matrix that expands to
+#	12 individual (2 * 3 * 2) jobs. 
+#
+#	rvm:
+#	  - 1.9.3
+#	  - 2.0.0
+#
+#	gemfile:
+#	  - gemfiles/Gemfile.rails-2.3.x
+#	  - gemfiles/Gemfile.rails-3.0.x
+#	  - gemfiles/Gemfile.rails-edge
+#
+#	env:
+#  	  - ISOLATED=true
+#	  - ISOLATED=false
+#
+#	You can also define exclusions to the build matrix:
+#
+#	matrix:
+#  	  exclude:
+#	    - rvm: 1.9.3
+#	      gemfile: gemfiles/Gemfile.rails-2.3.x
+#	      env: ISOLATED=true
+#
+# 	Rows that are Allowed to Fail
+# 	llowed failures are items in your build matrix that are allowed to fail
+#	without causing the entire build to fail
+#
+#	matrix:
+#  	  allow_failures:
+#    		- rvm: 1.9.3
+#	
+#	TODO read all section
+###############################################################################
+
+###############################################################################
+# Implementing Complex Build Steps
+#
+#	If you have a complex build environment that is hard to configure in
+#	the .travis.yml, consider moving the steps into a separate shell script.
+#
+###############################################################################
+script:
+	- make unittest TEST_MODULE=HAL/CPU/lpc17xx
+	- make unittest TEST_MODULE=HAL/Board/landtiger
+
