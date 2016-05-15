@@ -84,7 +84,7 @@ default:
 # Builds and Runs a Unit Test
 #
 unittest:
-	@echo "Unit is tested..."
+	make $(SILENCE) -f $(MAKE_FILES_PATH)/execute_unittest.mk TEST_MODULE=$(TEST_MODULE) ENV=$(ENV)
 
 #
 # Builds and Runs all system validation objects. 

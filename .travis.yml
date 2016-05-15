@@ -181,4 +181,6 @@ deploy:
 #
 ###############################################################################
 script:
+	- make unittest TEST_MODULE=HAL/CPU/lpc17xx
+	- make unittest TEST_MODULE=HAL/Board/landtiger
 
