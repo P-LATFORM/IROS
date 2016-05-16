@@ -43,6 +43,7 @@ language: c
 ###############################################################################
 before_install:
     - sudo apt-get update
+    - sudo apt-get install splint
 
 ###############################################################################
 # You can run custom commands before the script

@@ -42,6 +42,7 @@ endif
 # include environment
 include $(ENV_MAKE_FILE)
 
+include $(TEST_MODULE)/module.mk
 #
 # Include Specified Unit Test 
 #
@@ -116,9 +117,9 @@ default:
 # Create directory for Test out
 	mkdir -p $(UNITY_OUT_PATH)
 
-#                               ---------
-# 								UNIT TEST
-#                               ---------
+	@echo "\n******************************************************************"
+	@echo "                        UNIT TEST"
+	@echo "******************************************************************"
 	
 # Unit Test source needs unity.h file but relative location of unity.h can
 # be different for each module (unit) and unit test developer needs to
@@ -150,10 +151,10 @@ default:
 #
 	./$(TARGET)
 
-#                               -------------
-# 								CODE COVERAGE
-#                               -------------
-
+	@echo "\n******************************************************************"
+	@echo "                        CODE COVERAGE"
+	@echo "******************************************************************"
+	
 # GCOV tool requires unit test code for code coverage analysis, to work on
 # single directory, we also copy unit test source file into unity out directory
 	cp $(TEST_DIR)/$(TEST_FILE) $(UNITY_OUT_PATH)
@@ -165,3 +166,9 @@ default:
 
 # Run GCOV tool to see code coverage
 	gcov $(UNITY_OUT_PATH)/$(TEST_FILE) -n
+
+	@echo "\n******************************************************************"
+	@echo "                        CODE ANALYSIS"
+	@echo "******************************************************************"
+		
+	splint $(TEST_MODULE)/$(MODULE_SRC_FILES) $(INC_DIRS)
