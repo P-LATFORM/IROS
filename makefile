@@ -87,11 +87,10 @@ unittest:
 	make $(SILENCE) -f $(MAKE_FILES_PATH)/execute_unittest.mk TEST_MODULE=$(TEST_MODULE) ENV=$(ENV)
 
 #
-# Builds and Runs all system validation objects. 
-# Detailed General System Check
+# Builds and Runs all system validation objects.
 #
 check_all: clean
-	@echo "All system is checked..."
+	make $(SILENCE) -f $(MAKE_FILES_PATH)/execute_systemcheck.mk
 
 #
 # Cleans build output 
