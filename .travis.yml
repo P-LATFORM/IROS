@@ -45,6 +45,10 @@ before_install:
     - sudo apt-get update
     - gcc --version
     - gcov --version
+    - sudo apt-get install python-software-properties
+    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update
+    - sudo apt-get install gcc-4.8
 
 ###############################################################################
 # You can run custom commands before the script
