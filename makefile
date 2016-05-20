@@ -34,7 +34,7 @@
 #				> Runs all unittests, code coverage, static analysis
 #				> Runs all Integration Tests
 #
-# @see http://https://github.com/ir-os/IROS
+# @see https://github.com/P-LATFORM/P-OS/wiki
 #
 #*****************************************************************************
 #
@@ -51,15 +51,13 @@
 #                    		  DEFINITIONS                                      #
 ################################################################################
 
-ENV ?= x86
-
 #
 # Root Path 
 #
 ROOT_PATH = .
 
 # Path which includes all makefiles
-MAKE_FILES_PATH = Utilities/Makefiles
+MAKE_FILES_PATH = Environment/BuildSystem
 
 #
 # Detailed Compiling output
@@ -78,19 +76,18 @@ endif
 # Default Rule. Builds a Projects
 #
 default:
-	@echo "Projects is compiled..."
-
+	make -f $(MAKE_FILES_PATH)/build_project.mk PROJECT=$(PROJECT) $(SILENCE)
 #
 # Builds and Runs a Unit Test
 #
 unittest:
-	make $(SILENCE) -f $(MAKE_FILES_PATH)/execute_unittest.mk TEST_MODULE=$(TEST_MODULE) ENV=$(ENV)
+	make -f $(MAKE_FILES_PATH)/execute_unittest.mk TEST_MODULE=$(TEST_MODULE) $(SILENCE)
 
 #
 # Builds and Runs all system validation objects.
 #
 check_all: clean
-	make $(SILENCE) -f $(MAKE_FILES_PATH)/execute_systemcheck.mk
+	make -f $(MAKE_FILES_PATH)/execute_systemcheck.mk $(SILENCE)
 
 #
 # Cleans build output 
