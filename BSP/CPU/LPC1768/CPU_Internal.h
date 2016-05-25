@@ -47,3 +47,4 @@
 
 /*************************** FUNCTION PROTOTYPES *****************************/
 
+void SwitchToFirstTask(void);

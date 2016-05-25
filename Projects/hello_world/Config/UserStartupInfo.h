@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file Scheduler.h
+ * @file UserStartupInfo.h
  *
  * @author Murat Cakmak
  *
- * @brief Generic Scheduler Interface for Kernel
+ * @brief 
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -12,7 +12,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Platform
+ * Copyright (c) 2016 P-OS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,8 @@
  * SOFTWARE.
  *
  *******************************************************************************/
-#ifndef __SCHEDULER_H
-#define __SCHEDULER_H
+#ifndef __USER_STARTUP_INFO_H
+#define __USER_STARTUP_INFO_H
 
 /********************************* INCLUDES ***********************************/
 #include "Kernel.h"
@@ -42,11 +42,20 @@
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
+OS_USER_TASK_START_POINT(MyTask1Func);
+OS_USER_TASK_START_POINT(MyTask2Func);
 
 /***************************** TYPE DEFINITIONS *******************************/
 
 /*************************** FUNCTION DEFINITIONS *****************************/
-void Scheduler_Init(void);
-void Scheduler_Start(void);
 
-#endif	/* __SCHEDULER_H */
+OS_USER_TASK(MyTask1, MyTask1Func, 256);
+OS_USER_TASK(MyTask2, MyTask2Func, 256);
+
+STARTUP_APPLICATIONS
+(
+    USER_TASK_PREFIX(MyTask1),
+    USER_TASK_PREFIX(MyTask2)
+)
+
+#endif	/* __USER_STARTUP_INFO_H */

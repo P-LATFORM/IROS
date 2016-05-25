@@ -4,7 +4,7 @@
  *
  * @author Murat Cakmak
  *
- * @brief CPU Interface for Hardware Abstraction Layer
+ * @brief CPU Interface
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -37,12 +37,60 @@
 #define __CPU_H
 
 /********************************* INCLUDES ***********************************/
+#include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
-
+typedef void(*TaskStartPoint)(void* arg);
 /*************************** FUNCTION DEFINITIONS *****************************/
+/**
+* Initializes actual CPU and its components/peripherals.
+*
+* @param none
+* @return none
+*/
 void CPU_Init(void);
+
+/*
+ * Halts all system.
+ *
+ * @param none
+ * @return none
+ *
+ */
+void CPU_Halt(void);
+
+/*
+ * Starts Context Switching
+ *  Configures HW for CS and starts first task
+ *
+ * @param initialTCB Initial (First) TCB (Task) for Context Switching
+ *
+ * @return none
+ */
+void CPU_CS_Start(reg32_t* initialTCB);
+
+/*
+ * Switches running task to provided new TCB
+ *
+ * @param newTCB to be switched TCB
+ *
+ * @return none
+ *
+ */
+void CPU_CS_YieldTo(reg32_t* newTCB);
+
+/*
+ * Initializes task stack
+ *
+ * @param stack to be initialized task stack
+ * @param stackSize Stack Size
+ * @param taskStartPoint Start Point (Function) of Task
+ *
+ * @return top of stack after initialization. 
+ *		   [IMP] Caller should keep top of stack address for new context switches.
+ */
+reg32_t* CPU_CS_InitializeTaskStack(uint8_t* stack, uint32_t stackSize, TaskStartPoint startPoint);
 
 #endif	/* __CPU_H */

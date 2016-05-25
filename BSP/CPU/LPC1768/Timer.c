@@ -57,8 +57,10 @@ typedef struct
 /**************************** FUNCTION PROTOTYPES *****************************/
 
 /******************************** VARIABLES ***********************************/
-PRIVATE TimerInfo timers[CPU_TIMER_MAX_TIMER_COUNT] = { { 0 } };
+PRIVATE TimerInfo timers[CPU_TIMER_MAX_TIMER_COUNT];
 
+
+extern uint32_t SystemCoreClock;
 /**************************** PRIVATE FUNCTIONS *******************************/
 void TIMER0_IRQHandler(void)
 {
@@ -84,10 +86,6 @@ void TIMER0_IRQHandler(void)
 
 PRIVATE INLINE void InitializeTimerHW(void)
 {
-    extern uint32_t SystemCoreClock;
-    //int div_array[] = { 4, 1, 2, 8 };
-    //int div;
-    
     /* Enable Timer Block Power */    
     LPC_SC->PCONP |= CLKPWR_PCONP_PCTIM0 & CLKPWR_PCONP_BITMASK;
     
@@ -123,7 +121,7 @@ PRIVATE INLINE void InitializeTimerMatch(void)
 	/* Int and reset on Match */
     LPC_TIM0->MCR |= TIM_INT_ON_MATCH(0) | TIM_RESET_ON_MATCH(0);
     
-    LPC_TIM0->EMR 	&= ~TIM_EM_MASK(0); /* Clear Reg */    
+    LPC_TIM0->EMR 	&= ~(uint32_t)(TIM_EM_MASK(0)); /* Clear Reg */
     
     /* Match output type */
 	LPC_TIM0->EMR   |= TIM_EM_SET(0, TIM_EXTMATCH_NOTHING);
