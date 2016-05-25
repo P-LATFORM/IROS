@@ -4,7 +4,7 @@
 *
 * @author Murat Cakmak
 *
-* @brief LED Implementation for Actual Board
+* @brief LED Implementation for Actual Board (LandTiger)
 *
 * @see https://github.com/P-LATFORM/P-OS/wiki
 *
@@ -45,6 +45,7 @@
 
 /***************************** MACRO DEFINITIONS ******************************/
 #define BOARD_LED_COUNT			8
+
 /***************************** TYPE DEFINITIONS *******************************/
 
 /**************************** FUNCTION PROTOTYPES *****************************/

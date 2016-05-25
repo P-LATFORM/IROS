@@ -46,11 +46,7 @@
 /***************************** TYPE DEFINITIONS *******************************/
 
 /*************************** FUNCTION DEFINITIONS *****************************/
-int Scheduler_Init(void);
-int Scheduler_Start(void);
-
-OSTaskHandle Scheduler_AddTask(OSTask userTask);
-void Scheduler_RemoveTask(OSTaskHandle taskHandle);
-void Scheduler_SetTaskState(OSTaskHandle taskHandle, OSTaskState newState);
+void Scheduler_Init(void);
+void Scheduler_Start(void);
 
 #endif	/* __SCHEDULER_H */

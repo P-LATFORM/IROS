@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file mockCPU.c
+ * @file BSP_Config.h
  *
  * @author Murat Cakmak
  *
- * @brief Mock implementation for CPU
+ * @brief Mock BSP Definitions
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -33,10 +33,14 @@
  * SOFTWARE.
  *
  ******************************************************************************/
+#ifndef __BSP_CONFIG_H
+#define __BSP_CONFIG_H
 
 /********************************* INCLUDES ***********************************/
 
 /***************************** MACRO DEFINITIONS ******************************/
+
+#define CPU_TIMER_MAX_TIMER_COUNT 20
 
 /***************************** TYPE DEFINITIONS *******************************/
 
@@ -44,11 +48,8 @@
 
 /******************************** VARIABLES ***********************************/
 
+/**************************** PRIVATE FUNCTIONS ******************************/
+
 /***************************** PUBLIC FUNCTIONS *******************************/
 
-/**************************** PRIVATE FUNCTIONS *******************************/
-
-void CPU_Init(void)
-{
-
-}
+#endif /* __BSP_CONFIG_H */

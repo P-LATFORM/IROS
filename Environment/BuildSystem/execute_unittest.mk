@@ -82,6 +82,13 @@ ALL_SRC_FILES= \
 	$(TEST_RUNNER_FILE)
 
 #
+# Source files under to be tested module.
+#  We just use it for static analysis. We will analyze all source files
+#  individually
+#
+TEST_MODULE_SRC_FILES := $(shell /usr/bin/find $(TEST_MODULE) -mindepth 0 -maxdepth 1 -name "*.c")
+
+#
 # Include Directories
 #	- Header files of Unity Tool
 #	- Project Common path for common type definitions 
@@ -91,7 +98,10 @@ INC_DIRS = \
 	-I$(ROOT_PATH)/Include \
 	-I$(ROOT_PATH)/Include/BSP \
 	-I$(ROOT_PATH)/Kernel \
+	-I$(ROOT_PATH)/Environment/Tools/Debug \
+	-I$(TEST_MODULE) \
 	-I$(TEST_DIR) \
+	$(MODULE_INC_PATHS) \
 	-I$(TEST_DIR)/Mock
 
 #
@@ -106,7 +116,30 @@ CFLAGS += \
 # 
 # Compiler Symbols
 #
-SYMBOLS += -DTEST
+SYMBOLS += \
+	-DUNIT_TEST
+
+SPLINT_SYMBOLS = \
+	$(SYMBOLS)
+
+#
+# splint (static code analysis) Flags
+#
+#	- export-local 	: A declaration is exported but not used outside this module.
+#					  (P-OS Comment : We test just units (modules) and external
+#					   dependencies be discarded for unit tests)
+#	- varuse 		: Variable never used.
+#					  (P-OS Comment : We may have more than one file and each
+#					   file may use a part of variables but splint gives error
+#					   when a variable not used by a single file. )
+#	- predboolint	: (P-OS Comment : splint gives error when we use an integer
+#					   value as a bool value for a condition but it conflicts
+#					   with nature of C Programming Language so suppress it
+#
+SPLINT_FLAGS = \
+	-export-local \
+	-varuse \
+	-predboolint
 
 ################################################################################
 #                    		     RULES                                   	   #
@@ -116,14 +149,29 @@ SYMBOLS += -DTEST
 # Default Rule
 #	- Runs Unit Test (Unity)
 #	- Runs Code Coverity (GCOV)
+#	- Static Code Analyis (splint)
 #
-default:
+default: \
+	intro \
+	run_unittest \
+	run_codecovarege \
+	run_codeanalysis
+
+#
+# Introduction for Tested Module
+#
+intro:
+	@echo "\n=================================================================="
+	@echo "  >> Testing $(TEST_MODULE) Module"
+
+#
+# Rule to run Unit Test
+#
+run_unittest:
+	@echo "\n--------------------- UNIT TESTS ------------------------------"
+
 # Create directory for Test out
 	mkdir -p $(UNITY_OUT_PATH)
-	@echo "\n\n***************************************************************"
-	@echo "         MODULE CHECK FOR $(TEST_MODULE)"
-	@echo "***************************************************************"
-	@echo "\n===================== UNIT TESTS =============================="
 
 # Unit Test source needs unity.h file but relative location of unity.h can
 # be different for each module (unit) and unit test developer needs to
@@ -132,7 +180,7 @@ default:
 # In this way, developer just include without relative path. 
 # When compiling is finished, we remove unity.h
 	cp $(UNITY_ROOT)/unity.h $(TEST_DIR)
-		
+
 #
 # Unity requires Test Runner Module and following RUBY script extracts test 
 # runner modules automatically from Unit Test file
@@ -155,7 +203,12 @@ default:
 #
 	./$(TARGET)
 
-	@echo "\n===================== CODE COVERAGE =============================="
+
+#
+# Rule to run code coverage on tested module
+#
+run_codecovarege:
+	@echo "\n-------------------- UNIT CODE COVERAGE ---------------------------"
 	
 # GCOV tool requires unit test code for code coverage analysis, to work on
 # single directory, we also copy unit test source file into unity out directory
@@ -169,6 +222,10 @@ default:
 # Run GCOV tool to see code coverage
 	gcov $(UNITY_OUT_PATH)/$(TEST_FILE) -n
 
-	@echo "===================== CODE ANALYSIS =============================="
-		
-	splint $(TEST_MODULE)/$(MODULE_SRC_FILES) $(INC_DIRS)
+
+#
+# Rule to run Static Code Analysis
+#
+run_codeanalysis:
+	@echo "------------------- UNIT CODE ANALYSIS -----------------------------"
+	splint $(TEST_MODULE_SRC_FILES) $(INC_DIRS) $(SPLINT_SYMBOLS) $(SPLINT_FLAGS)

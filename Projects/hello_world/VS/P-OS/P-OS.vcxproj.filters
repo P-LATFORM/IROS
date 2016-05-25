@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Kernel">
+      <UniqueIdentifier>{758c97f7-76e7-4e50-ac2f-1042d2f4de22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel\Schedulers">
+      <UniqueIdentifier>{18c0bfff-1d1b-4d99-bdf2-bc5c16645342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel\Schedulers\Adaptive">
+      <UniqueIdentifier>{080469c1-1f15-432c-90e6-eca841c388a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel\Schedulers\NonPreemptiveRR">
+      <UniqueIdentifier>{0912beea-5b43-418c-8670-0f0e346e5cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects">
+      <UniqueIdentifier>{1b961ea2-4081-487a-bec7-0d83b9e39597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\hello_world">
+      <UniqueIdentifier>{098ea0eb-9908-4871-b7cf-036f118a6ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Driver">
+      <UniqueIdentifier>{44b9e60b-0ae5-4028-9cae-ba2cca88c57a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Kernel\Kernel.c">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Kernel\Scheduler\NonePreemptiveRR\Scheduler.c">
+      <Filter>Kernel\Schedulers\NonPreemptiveRR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\main.c">
+      <Filter>Projects\hello_world</Filter>
+    </ClCompile>
+    <ClCompile Include="BSP\BSP.c">
+      <Filter>Driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\BSP\CPU\LPC1768\CPU.c">
+      <Filter>Driver</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Kernel\Kernel.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Kernel\Scheduler\Scheduler.h">
+      <Filter>Kernel\Schedulers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

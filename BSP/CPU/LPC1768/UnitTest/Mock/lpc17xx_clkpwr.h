@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file mockCPU.c
+ * @file lpc17xx_clkpwr.h
  *
  * @author Murat Cakmak
  *
- * @brief Mock implementation for CPU
+ * @brief Mock Definitions for lpc17xx_clkpwr.h
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -34,21 +34,29 @@
  *
  ******************************************************************************/
 
+#ifndef LPC17XX_CLKPWR_H_
+#define LPC17XX_CLKPWR_H_
+
 /********************************* INCLUDES ***********************************/
+
+#include "LPC17xx.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
-/***************************** TYPE DEFINITIONS *******************************/
+/** Power Control for Peripherals bit mask */
+#define CLKPWR_PCONP_BITMASK				0xEFEFF7DE
 
-/**************************** FUNCTION PROTOTYPES *****************************/
+#define	CLKPWR_PCONP_PCTIM0					((uint32_t)(1<<1))
 
-/******************************** VARIABLES ***********************************/
+#define CLKPWR_PCLKSEL_BITMASK(p)			_SBF(p,0x03)
 
-/***************************** PUBLIC FUNCTIONS *******************************/
+#define CLKPWR_PCLKSEL_SET(p,n)				_SBF(p,n)
 
-/**************************** PRIVATE FUNCTIONS *******************************/
+/** Peripheral clock divider bit position for TIMER0 */
+#define	CLKPWR_PCLKSEL_TIMER0  				((uint32_t)(2))
 
-void CPU_Init(void)
-{
+#define	CLKPWR_PCLKSEL_CCLK_DIV_4  			((uint32_t)(0))
 
-}
+#define TIM_CTCR_MODE_MASK  				0x3
+
+#endif /* #ifndef LPC17XX_CLKPWR_H_ */

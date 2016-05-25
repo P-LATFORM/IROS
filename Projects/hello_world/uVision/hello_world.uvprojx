@@ -397,6 +397,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\BSP\CPU\LPC1768\GPIO.c</FilePath>
             </File>
+            <File>
+              <FileName>CPU_Assembly.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\CPU_Assembly.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

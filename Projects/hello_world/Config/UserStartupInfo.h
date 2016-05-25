@@ -1,10 +1,15 @@
 /*******************************************************************************
  *
- * @file mockCPU.c
+ * @file UserStartupInfo.h
  *
  * @author Murat Cakmak
  *
- * @brief Mock implementation for CPU
+ * @brief P-OS support static task creation to decrease memory footprint and
+ * 		  this file provides information about static user tasks.
+ *
+ * 		  - This file is a mandatory for static task creation.
+ * 		  - Also user must specify startup task using STARTUP_APPLICATIONS(...)
+ * 		  	macro
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -32,23 +37,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ******************************************************************************/
+ *******************************************************************************/
+#ifndef __USER_STARTUP_INFO_H
+#define __USER_STARTUP_INFO_H
 
 /********************************* INCLUDES ***********************************/
+#include "Kernel.h"
+
+#include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
 
 /**************************** FUNCTION PROTOTYPES *****************************/
+/*
+ * User Task Start Points (Functions)
+ */
+OS_USER_TASK_START_POINT(MyTask1Func);
+OS_USER_TASK_START_POINT(MyTask2Func);
 
-/******************************** VARIABLES ***********************************/
+/********************************* VARIABLES **********************************/
 
-/***************************** PUBLIC FUNCTIONS *******************************/
+/* User Task 1 with 256 stack size */
+OS_USER_TASK(MyTask1, MyTask1Func, 256);
 
-/**************************** PRIVATE FUNCTIONS *******************************/
+/* User Task 1 with 512 stack size */
+OS_USER_TASK(MyTask2, MyTask2Func, 512);
 
-void CPU_Init(void)
-{
+/*
+ * Startup Application.
+ * After bootup and kernel initialization, kernel starts following applications
+ *
+ */
+STARTUP_APPLICATIONS
+(
+    USER_TASK_PREFIX(MyTask1),
+    USER_TASK_PREFIX(MyTask2)
+)
 
-}
+#endif	/* __USER_STARTUP_INFO_H */

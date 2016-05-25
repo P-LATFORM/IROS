@@ -34,6 +34,9 @@
 *
 ******************************************************************************/
 
+#ifndef __CPU_INTERNAL_H
+#define __CPU_INTERNAL_H
+
 /********************************* INCLUDES ***********************************/
 #include "postypes.h"
 
@@ -45,5 +48,18 @@
 
 /******************************** VARIABLES ***********************************/
 
-/*************************** FUNCTION PROTOTYPES *****************************/
 
+/*************************** FUNCTION PROTOTYPES *****************************/
+/*
+ * Starts Context Switching on CPU.
+ *
+ * [IMP] To be switched task (currentTCB) must be set before calling this
+ * function.
+ *
+ * @param none
+ *
+ * @return none
+ */
+void StartContextSwitching(void);
+
+#endif /* __CPU_INTERNAL_H */

@@ -4,7 +4,32 @@
  *
  * @author Murat Cakmak
  *
- * @brief P-OS Kernel Interface
+ * @brief P-OS Kernel Interface for User Applications. 
+ *
+ *		  USER GUIDE
+ *
+ *		  1. CREATE USER TASKS and ADD to STARTUP
+ *
+ *				//User function for task execution
+ *				OS_USER_TASK_START_POINT(MyTaskFunc)
+ *				{
+ *					while (true) 
+ *					{
+ *						// User Code
+ *					}
+ *				}
+ *
+ *				//Create an user task with name MyTask1 and 256 Stack Size using MyTaskFunc function
+ *				OS_USER_TASK(MyTask1, MyTaskFunc, 256);
+ *				//Create an another user task with name MyTask2 and 512 Stack Size using MyTaskFunc function
+ *				OS_USER_TASK(MyTask2, MyTaskFunc, 512);
+ *	
+ *				// Add MyTask1 and MyTask2 to startup. 
+ *				STARTUP_APPLICATIONS
+ *				(
+ *					USER_TASK_PREFIX(MyTask1);
+ *					USER_TASK_PREFIX(MyTask2);
+ *				)
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -40,30 +65,76 @@
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
-/*
- * User Application Signature.
- *
- * User space applications can use this macro to create compatible User
- * Applications
- */
-#define OS_USER_APPLICATION(appName)		void appName(void)
-
-/*
- * Invalid Task Handle.
- * In case of task creation fail, OS returns this value.
- * */
-#define OS_TASK_INVALID_HANDLE				(-1)
-
 
 /*
  * Scheduler Types
  */
-/* Non-Preemptive Round Robin Scheduler */
 #define OS_SCHEDULER_NON_PREEMPTIVE_RR		(1)
 #define OS_SCHEDULER_EDF					(2)
 #define OS_SCHEDULER_COOPARATIVE			(3)
 #define OS_SCHEDULER_PREEMPTIVE				(4)
 #define OS_SCHEDULER_ADAPTIVE				(5)
+
+/*
+ * User Task
+ *
+ * User creates an task using this definition. 
+ * 
+ * NOTE
+ * 	If you need to change TaskName##Type structure, you have to pay attention to
+ * 	change also order or initialization order of 'TaskName'
+ *
+ * @param TaskName Name of user task. 
+ * @param StartPoint Start point (function) for user tasks. User task started 
+ *		  from that function. 
+ * @param StackSize Stack Size of User Task. 
+ * 
+ */
+#define OS_USER_TASK(TaskName, StartPoint, StackSize) \
+typedef struct \
+{ \
+    OSUserTaskStartPoint __task; \
+    uint32_t __stackSize; \
+    uint8_t __stack[StackSize]; \
+} TaskName##Type; \
+static TaskName##Type TaskName = { StartPoint, StackSize, { 0 } };
+
+/*
+ * Prefix for User Task. 
+ * 
+ * [IMP] When you add a User Task to Startup Applications, you should use this 
+ * macro with user task name. 
+ * 
+ * @param UserTask User Task
+ *
+ * TODO Find a more suitable name than Prefix
+ */
+#define USER_TASK_PREFIX(UserTask)	&(UserTask)
+
+/*
+ * User Task Start point Prototype.
+ *
+ * User space applications can use this macro to create compatible function 
+ * (Start Points)
+ *
+ * @param TaskStartPoint (Function) Name of User Task Start Point
+ *
+ */
+#define OS_USER_TASK_START_POINT(TaskStartPoint) \
+			void TaskStartPoint(void* args)
+
+/*
+ * Static Startup Applications
+ * 
+ * You can add an user task to system startup. Kernel starts startup functions 
+ * after kernel initialization.
+ *
+ * @param ... List of Startup Functions. 
+ *			  IMP you should pass user task using USER_TASK_PREFIX() macro.
+ * 
+ */
+#define STARTUP_APPLICATIONS(...) \
+static void* startupApplications[] = { __VA_ARGS__ };
 
 /***************************** TYPE DEFINITIONS *******************************/
 
@@ -80,20 +151,25 @@ typedef enum
 	OSTaskState_Ready,								/* The process is waiting to be assigned to a processor */
 } OSTaskState;
 
-/* Task Handle Type */
-typedef int32_t OSTaskHandle;
-
 /* User Task Signature */
-typedef void(*OSTask)(void);
+typedef void(*OSUserTaskStartPoint)(void*);
 
 /*************************** FUNCTION DEFINITIONS *****************************/
-OSTaskHandle OS_CreateTask(OSTask task);
-void OS_TerminateTask(OSTaskHandle taskHandle);
-void OS_SetTaskState(OSTaskHandle taskHandle, OSTaskState newState);
+
+/*
+ * Interrupts running task execution and switches execution to next task. 
+ * 
+ * @param none
+ * @return none
+ */
+void OS_Yield(void);
 
 /*
  * IMP : User space have to implement this function.
- * Kernel uses this function to initialize User Space Area before start User Tasks
+ * Kernel uses this function to initialize User Space Area before starts User Tasks
+ * 
+ * @param none
+ * @return none
  */
 extern void OS_InitializeUserSpace(void);
 
