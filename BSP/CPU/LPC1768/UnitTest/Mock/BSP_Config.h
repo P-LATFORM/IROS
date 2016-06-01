@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file Scheduler.h
+ * @file BSP_Config.h
  *
  * @author Murat Cakmak
  *
- * @brief Generic Scheduler Interface for Kernel
+ * @brief Mock BSP Definitions
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -12,7 +12,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Platform
+ * Copyright (c) 2016 P-OS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,21 +32,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *******************************************************************************/
-#ifndef __SCHEDULER_H
-#define __SCHEDULER_H
+ ******************************************************************************/
+#ifndef __BSP_CONFIG_H
+#define __BSP_CONFIG_H
 
 /********************************* INCLUDES ***********************************/
-#include "Kernel.h"
-
-#include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
+#define CPU_TIMER_MAX_TIMER_COUNT 20
+
 /***************************** TYPE DEFINITIONS *******************************/
 
-/*************************** FUNCTION DEFINITIONS *****************************/
-void Scheduler_Init(void);
-void Scheduler_Start(void);
+/**************************** FUNCTION PROTOTYPES *****************************/
 
-#endif	/* __SCHEDULER_H */
+/******************************** VARIABLES ***********************************/
+
+/**************************** PRIVATE FUNCTIONS ******************************/
+
+/***************************** PUBLIC FUNCTIONS *******************************/
+
+#endif /* __BSP_CONFIG_H */

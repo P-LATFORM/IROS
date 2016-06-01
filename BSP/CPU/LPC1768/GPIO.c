@@ -64,17 +64,17 @@
  *
  * @return none
  */
-PRIVATE void SetPinRegister(volatile uint32_t* regPtr, uint32_t port, uint32_t pin, uint32_t val)
+PRIVATE void SetPinRegister(reg32_t* regPtr, uint32_t port, uint32_t pin, uint32_t val)
 {
 	/* Function per Pin is represented by two bits so lets find function offset of pin */
 	uint32_t pinOffset = pin * 2;
-	/* 
-	 * While function are represented by two bit, 32 bit PINSEL register just 
+	/*
+	 * While function are represented by two bit, 32 bit PINSEL register just
 	 * handle 16 pins (32 / 2 function bits). So, we need to multiply port number by two
-	 * to get exact PINSEL register. 
-	 * On the other hand, if pin number is equal or higher than 16, it also exceeds a 
-	 * pinsel register so we need to handle next PINSEL register so add also 
-	 * division of pinFunctionOffset by 32. 
+	 * to get exact PINSEL register.
+	 * On the other hand, if pin number is equal or higher than 16, it also exceeds a
+	 * pinsel register so we need to handle next PINSEL register so add also
+	 * division of pinFunctionOffset by 32.
 	 */
 	uint32_t pinselRegOffset = port * 2 + (pinOffset / 32);
 	/* If pin function offset excees PINSEl Register, take a mod to get exact offset. */
@@ -160,13 +160,13 @@ void GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_
 void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState newState)
 {
 	/* Get Mask for Pin */
-    uint32_t pinMask = 1<<pin;
+    uint32_t pinMask = ((uint32_t)1)<<pin;
     /* Get GPIO Register Address */
     LPC_GPIO_TypeDef* regGPIO = &LPC_GPIO0[port];
-    
+
     /* Set Pin as output */
     regGPIO->FIODIR |= pinMask;
-    
+
     if (newState == GPIO_PINSTATE_HIGH)
     {
     	/* Set (1) IO output */
@@ -190,16 +190,16 @@ void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState newState)
 GPIOPinState GPIO_ReadPin(uint32_t port, uint32_t pin)
 {
 	/* Get Mask for Pin */
-    uint32_t pinMask = 1<<pin;
+    uint32_t pinMask = ((uint32_t)1)<<pin;
     /* Get GPIO Register Address */
     LPC_GPIO_TypeDef* regGPIO = &LPC_GPIO0[port];
     uint32_t pinState;
-    
+
     /* Set Pin as input */
     regGPIO->FIODIR &= ~pinMask;
-    
+
     /* Get Pin State */
-    pinState = (regGPIO->FIOPIN & pinMask) ? 1 : 0;
-    
+    pinState = (uint32_t)((regGPIO->FIOPIN & pinMask) ? 1 : 0);
+
     return (GPIOPinState)pinState;
 }

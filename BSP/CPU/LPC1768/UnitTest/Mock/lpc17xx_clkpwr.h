@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file Scheduler.h
+ * @file BSP_Config.h
  *
  * @author Murat Cakmak
  *
- * @brief Generic Scheduler Interface for Kernel
+ * @brief Mock Definitions for lpc17xx_clkpwr.h
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -12,7 +12,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Platform
+ * Copyright (c) 2016 P-OS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,21 +32,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *******************************************************************************/
-#ifndef __SCHEDULER_H
-#define __SCHEDULER_H
+ ******************************************************************************/
+
+#ifndef LPC17XX_CLKPWR_H_
+#define LPC17XX_CLKPWR_H_
 
 /********************************* INCLUDES ***********************************/
-#include "Kernel.h"
 
-#include "postypes.h"
+#include "LPC17xx.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
-/***************************** TYPE DEFINITIONS *******************************/
+/** Power Control for Peripherals bit mask */
+#define CLKPWR_PCONP_BITMASK				0xEFEFF7DE
 
-/*************************** FUNCTION DEFINITIONS *****************************/
-void Scheduler_Init(void);
-void Scheduler_Start(void);
+#define	CLKPWR_PCONP_PCTIM0					((uint32_t)(1<<1))
 
-#endif	/* __SCHEDULER_H */
+#define CLKPWR_PCLKSEL_BITMASK(p)			_SBF(p,0x03)
+
+#define CLKPWR_PCLKSEL_SET(p,n)				_SBF(p,n)
+
+/** Peripheral clock divider bit position for TIMER0 */
+#define	CLKPWR_PCLKSEL_TIMER0  				((uint32_t)(2))
+
+#define	CLKPWR_PCLKSEL_CCLK_DIV_4  			((uint32_t)(0))
+
+#define TIM_CTCR_MODE_MASK  				0x3
+
+#endif /* #ifndef LPC17XX_CLKPWR_H_ */
