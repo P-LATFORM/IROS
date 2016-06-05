@@ -375,32 +375,47 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>BSP</GroupName>
+          <GroupName>Driver + HAL</GroupName>
           <Files>
+            <File>
+              <FileName>startup_LPC17xx.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\internal\startup_LPC17xx.s</FilePath>
+            </File>
+            <File>
+              <FileName>system_LPC17xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\internal\system_LPC17xx.c</FilePath>
+            </File>
             <File>
               <FileName>Board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\BSP\Board\LandTiger\Board.c</FilePath>
             </File>
             <File>
-              <FileName>LED.c</FileName>
+              <FileName>Drv_CPUCore.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\Board\LandTiger\LED.c</FilePath>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_CPUCore.c</FilePath>
             </File>
             <File>
-              <FileName>CPU.c</FileName>
+              <FileName>Drv_CPUCore_Assembly.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\CPU.c</FilePath>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_CPUCore_Assembly.c</FilePath>
             </File>
             <File>
-              <FileName>GPIO.c</FileName>
+              <FileName>Drv_GPIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\GPIO.c</FilePath>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_GPIO.c</FilePath>
             </File>
             <File>
-              <FileName>CPU_Assembly.c</FileName>
+              <FileName>Drv_UserTimer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\CPU_Assembly.c</FilePath>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_UserTimer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Drv_LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\BSP\Board\LandTiger\Drv_LED.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -431,23 +446,6 @@
         </Group>
         <Group>
           <GroupName>HAL</GroupName>
-          <Files>
-            <File>
-              <FileName>system_LPC17xx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\internal\system_LPC17xx.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_LPC17xx.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\internal\startup_LPC17xx.s</FilePath>
-            </File>
-            <File>
-              <FileName>Timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\Timer.c</FilePath>
-            </File>
-          </Files>
         </Group>
       </Groups>
     </Target>

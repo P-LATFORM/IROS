@@ -37,7 +37,7 @@
 #define __BOARD_H
 
 /********************************* INCLUDES ***********************************/
-#include "BSP_Config.h"
+#include "BSPConfig.h"
 
 #include "postypes.h"
 

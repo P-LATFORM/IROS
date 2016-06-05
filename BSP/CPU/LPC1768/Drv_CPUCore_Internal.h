@@ -1,10 +1,10 @@
 /*******************************************************************************
 *
-* @file LED.c
+* @file DrvCPUCoreInternal.h
 *
 * @author Murat Cakmak
 *
-* @brief LED Implementation for Actual Board (LandTiger)
+* @brief CPU specific Internal Definitions
 *
 * @see https://github.com/P-LATFORM/P-OS/wiki
 *
@@ -34,17 +34,13 @@
 *
 ******************************************************************************/
 
-#include "BSP_Config.h"
-
-#if BOARD_ENABLE_LED_INTERFACE
+#ifndef __DRV_CPUCORE_INTERNAL_H
+#define __DRV_CPUCORE_INTERNAL_H
 
 /********************************* INCLUDES ***********************************/
-#include "GPIO.h"
-
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
-#define BOARD_LED_COUNT			8
 
 /***************************** TYPE DEFINITIONS *******************************/
 
@@ -52,43 +48,18 @@
 
 /******************************** VARIABLES ***********************************/
 
-/**************************** PRIVATE FUNCTIONS *******************************/
 
-/***************************** PUBLIC FUNCTIONS *******************************/
-void Board_LedInit(void)
-{
-	int pin;
-    /*
-     * Configure LCD Pins
-     * P2.0 ... P2.7
-     * 
-     */    
-	for (pin = 0; pin < BOARD_LED_COUNT; pin++)
-	{
-		GPIO_ConfigurePin(2, pin, 0, 0);
-	}
+/*************************** FUNCTION PROTOTYPES *****************************/
+/*
+ * Starts Context Switching on CPU.
+ *
+ * [IMP] To be switched task (currentTCB) must be set before calling this
+ * function.
+ *
+ * @param none
+ *
+ * @return none
+ */
+INTERNAL void StartContextSwitching(void);
 
-	/* LCD cannot be work with LCD at same time.So disable LCD Control pins */   
-    /* P0.19 ... P0.25 */
-    for (pin = 19; pin <= 25; pin++)
-    {
-        GPIO_ConfigurePin(0, pin, 0, 0);
-        GPIO_WritePin(0, pin, GPIO_PINSTATE_HIGH);
-    }
-}
-
-void Board_LedOn(uint32_t ledNo)
-{
-    if (ledNo >= BOARD_LED_COUNT) return;
-    
-    GPIO_WritePin(2, ledNo, GPIO_PINSTATE_HIGH);
-}
-
-void Board_LedOff(uint32_t ledNo)
-{
-    if (ledNo >= BOARD_LED_COUNT) return;
-    
-    GPIO_WritePin(2, ledNo, GPIO_PINSTATE_LOW);
-}
-
-#endif /* BOARD_ENABLE_LED_INTERFACE */
+#endif /* __DRV_CPUCORE_INTERNAL_H */

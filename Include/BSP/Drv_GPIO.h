@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file CPU.h
+ * @file Drv_GPIO.h
  *
  * @author Murat Cakmak
  *
- * @brief CPU Interface
+ * @brief GPIO Driver Interface
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -12,7 +12,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 P-OS
+ * Copyright (c) 2016 Platform
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,64 +33,25 @@
  * SOFTWARE.
  *
  *******************************************************************************/
-#ifndef __CPU_H
-#define __CPU_H
+#ifndef __DRV_GPIO_H
+#define __DRV_GPIO_H
 
 /********************************* INCLUDES ***********************************/
 #include "postypes.h"
-
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
-typedef void(*TaskStartPoint)(void* arg);
+/* GPIO Pin States */
+typedef enum
+{
+	DRV_GPIO_PINSTATE_LOW = 0,
+	DRV_GPIO_PINSTATE_HIGH = 1
+} Drv_GPIO_PinState;
+
 /*************************** FUNCTION DEFINITIONS *****************************/
-/**
-* Initializes actual CPU and its components/peripherals.
-*
-* @param none
-* @return none
-*/
-void CPU_Init(void);
+void Drv_GPIO_Init(void);
+void Drv_GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_t driveMode);
+void Drv_GPIO_WritePin(uint32_t port, uint32_t pin, Drv_GPIO_PinState state);
+Drv_GPIO_PinState Drv_GPIO_ReadPin(uint32_t port, uint32_t pin);
 
-/*
- * Halts all system.
- *
- * @param none
- * @return none
- *
- */
-void CPU_Halt(void);
-
-/*
- * Starts Context Switching
- *  Configures HW for CS and starts first task
- *
- * @param initialTCB Initial (First) TCB (Task) for Context Switching
- *
- * @return none
- */
-void CPU_CS_Start(reg32_t* initialTCB);
-
-/*
- * Switches running task to provided new TCB
- *
- * @param newTCB to be switched TCB
- *
- * @return none
- *
- */
-void CPU_CS_YieldTo(reg32_t* newTCB);
-
-/*
- * Initializes task stack
- *
- * @param stack to be initialized task stack
- * @param stackSize Stack Size
- * @param taskStartPoint Start Point (Function) of Task
- *
- * @return top of stack after initialization. 
- *		   [IMP] Caller should keep top of stack address for new context switches.
- */
-reg32_t* CPU_CS_InitializeTaskStack(uint8_t* stack, uint32_t stackSize, TaskStartPoint startPoint);
-
-#endif	/* __CPU_H */
+#endif	/* __DRV_GPIO_H */

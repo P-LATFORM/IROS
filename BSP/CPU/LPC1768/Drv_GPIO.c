@@ -35,7 +35,7 @@
 ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
-#include "GPIO.h"
+#include "Drv_GPIO.h"
 
 #include "LPC17xx.h"
 
@@ -128,7 +128,7 @@ PRIVATE INLINE void SetPinMode(uint32_t port, uint32_t pin, uint32_t driverMode)
  *
  * @return none
  */
-void GPIO_Init(void)
+void Drv_GPIO_Init(void)
 {
 }
 
@@ -142,7 +142,7 @@ void GPIO_Init(void)
  *
  * @return none
  */
-void GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_t driveMode)
+void Drv_GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_t driveMode)
 {
 	SetPinFunction(port, pin, functionNo);
 	SetPinMode(port, pin, driveMode);
@@ -157,7 +157,7 @@ void GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_
  *
  * @return none
  */
-void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState newState)
+void Drv_GPIO_WritePin(uint32_t port, uint32_t pin, Drv_GPIO_PinState newState)
 {
 	/* Get Mask for Pin */
     uint32_t pinMask = ((uint32_t)1)<<pin;
@@ -167,7 +167,7 @@ void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState newState)
     /* Set Pin as output */
     regGPIO->FIODIR |= pinMask;
 
-    if (newState == GPIO_PINSTATE_HIGH)
+    if (newState == DRV_GPIO_PINSTATE_HIGH)
     {
     	/* Set (1) IO output */
         regGPIO->FIOSET = pinMask;
@@ -187,7 +187,7 @@ void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState newState)
  *
  * @return returns state (High or Low) of Pin
  */
-GPIOPinState GPIO_ReadPin(uint32_t port, uint32_t pin)
+Drv_GPIO_PinState GPIO_ReadPin(uint32_t port, uint32_t pin)
 {
 	/* Get Mask for Pin */
     uint32_t pinMask = ((uint32_t)1)<<pin;
@@ -199,7 +199,7 @@ GPIOPinState GPIO_ReadPin(uint32_t port, uint32_t pin)
     regGPIO->FIODIR &= ~pinMask;
 
     /* Get Pin State */
-    pinState = (uint32_t)((regGPIO->FIOPIN & pinMask) ? 1 : 0);
+    pinState = (uint32_t)(((regGPIO->FIOPIN & pinMask) == 0) ? 0 : 1);
 
-    return (GPIOPinState)pinState;
+    return (Drv_GPIO_PinState)pinState;
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * @file Timer.c
+ * @file DrvUserTimer.c
  *
  * @author Murat Cakmak
  *
@@ -35,9 +35,7 @@
  ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
-#include "Timer.h"
-
-#include "BSP_Config.h"
+#include "Drv_UserTimer.h"
 
 #include "LPC17xx.h"
 #include "lpc17xx_clkpwr.h"
@@ -45,13 +43,14 @@
 
 #include "Debug.h"
 #include "postypes.h"
+#include "BSPConfig.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
 typedef struct
 {
-    TimerCallback callback;
+	Drv_TimerCallback callback;
     int32_t timeout;
 } TimerInfo;
 /**************************** FUNCTION PROTOTYPES *****************************/
@@ -59,8 +58,8 @@ typedef struct
 /******************************** VARIABLES ***********************************/
 PRIVATE TimerInfo timers[CPU_TIMER_MAX_TIMER_COUNT];
 
-
 extern uint32_t SystemCoreClock;
+
 /**************************** PRIVATE FUNCTIONS *******************************/
 void TIMER0_IRQHandler(void)
 {
@@ -128,7 +127,7 @@ PRIVATE INLINE void InitializeTimerMatch(void)
 }
 
 /***************************** PUBLIC FUNCTIONS *******************************/
-void Timer_Init(void)
+void Drv_Timer_Init(void)
 {
     InitializeTimerHW();
     InitializeTimerMatch();
@@ -140,11 +139,11 @@ void Timer_Init(void)
     LPC_TIM0->TCR |= TIM_ENABLE;
 		
 }
-TimerHandle Timer_Create(TimerCallback userTimerCB)
+Drv_TimerHandle Drv_Timer_Create(Drv_TimerCallback userTimerCB)
 {
     int32_t i;
     
-    if (userTimerCB == NULL) return TIMER_INVALID_HANDLE;
+    if (userTimerCB == NULL) return DRV_TIMER_INVALID_HANDLE;
 
 	// if there is not any free slot we will return -1 (FAILURE)
 	for(i = (CPU_TIMER_MAX_TIMER_COUNT - 1); i >= 0; i--)
@@ -159,8 +158,8 @@ TimerHandle Timer_Create(TimerCallback userTimerCB)
 
 	return(i);
 }
-void Timer_Remove(TimerHandle timer);
-void Timer_Start(TimerHandle timer, uint32_t timeout)
+void Drv_Timer_Remove(Drv_TimerHandle timer);
+void Drv_Timer_Start(Drv_TimerHandle timer, uint32_t timeout)
 {
     if(timer >= CPU_TIMER_MAX_TIMER_COUNT)
 	{
@@ -169,6 +168,6 @@ void Timer_Start(TimerHandle timer, uint32_t timeout)
 	
     timers[timer].timeout = (int32_t)(timeout / 10);
 }
-void Timer_Stop(TimerHandle timer, uint32_t timeout);
-void Timer_DelayUs(uint32_t microseconds);
-void Timer_DelayMs(uint32_t milliseconds);
+void Drv_Timer_Stop(Drv_TimerHandle timer, uint32_t timeout);
+void Drv_Timer_DelayUs(uint32_t microseconds);
+void Drv_Timer_DelayMs(uint32_t milliseconds);

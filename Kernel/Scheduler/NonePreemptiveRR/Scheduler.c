@@ -38,7 +38,7 @@
  *
  ******************************************************************************/
 
-#include "OS_Config.h"
+#include "OSConfig.h"
 
 #if (OS_SCHEDULER == OS_SCHEDULER_NON_PREEMPTIVE_RR)
 

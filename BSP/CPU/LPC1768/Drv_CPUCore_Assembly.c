@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * @file CPU_Assembly.c
+ * @file DrvCPUCoreAssembly.c
  *
  * @author Murat Cakmak
  *
@@ -49,8 +49,7 @@
 
 /********************************* INCLUDES ***********************************/
 
-#include "CPU_Internal.h"
-
+#include "Drv_CPUCore_Internal.h"
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/

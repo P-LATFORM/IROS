@@ -1,6 +1,6 @@
+#include "Drv_CPUCore.h"
+#include "Drv_UserTimer.h"
 #include "Board.h"
-#include "CPU.h"
-#include "Timer.h"
 
 #if !defined(__GNUC__)
 

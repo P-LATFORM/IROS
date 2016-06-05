@@ -42,10 +42,10 @@
 
 /********************************* INCLUDES ***********************************/
 #include "Kernel.h"
+
+#include "Drv_CPUCore.h"
 #include "Scheduler.h"
 #include "Board.h"
-#include "CPU.h"
-
 #include "UserStartupInfo.h"
 
 #include "postypes.h"
@@ -224,9 +224,9 @@ PRIVATE INLINE void InitializeNewTask(TCB* newTCB)
 	UserTaskBaseType* userTask = newTCB->userTaskInfo;
     
 	/* Initialize stack of user task according to CPU architecture */
-	newTCB->topOfStack = CPU_CS_InitializeTaskStack(userTask->stack,
-                                                 	userTask->stackSize,
-                                                 	userTask->taskStartPoint);
+	newTCB->topOfStack = Drv_CPUCore_CSInitializeTaskStack(userTask->stack,
+                                                           userTask->stackSize,
+                                                           userTask->taskStartPoint);
 }
 
 /**
@@ -310,7 +310,7 @@ PRIVATE INLINE void StartKernel(void)
 
 	//kernelSettings.flags.schedulerRunning = 1;	
 
-	CPU_CS_Start((reg32_t*)firstTask);
+	Drv_CPUCore_CSStart((reg32_t*)firstTask);
 
 	/* TODO When Scheduler is implemented */
 	//Scheduler_Start();
@@ -321,7 +321,7 @@ PUBLIC void OS_Yield(void)
 {
     TCB* nextTCB = Scheduler_GetNextTCB();
     
-    CPU_CS_YieldTo((reg32_t*)nextTCB);
+    Drv_CPUCore_CSYieldTo((reg32_t*)nextTCB);
 }
 
 /**

@@ -37,7 +37,7 @@
 #define __DEBUG_H
 
 /********************************* INCLUDES ***********************************/
-#include "Project_Config.h"
+#include "ProjectConfig.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 

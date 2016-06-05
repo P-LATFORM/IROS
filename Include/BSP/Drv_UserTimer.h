@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file mockCPU.c
+ * @file Drv_UserTimer.h
  *
  * @author Murat Cakmak
  *
- * @brief Mock implementation for CPU
+ * @brief User Timer Driver Interface
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -32,23 +32,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ******************************************************************************/
+ *******************************************************************************/
+#ifndef __DRV_USERTIMER_H
+#define __DRV_USERTIMER_H
 
 /********************************* INCLUDES ***********************************/
 
+#include "postypes.h"
+
 /***************************** MACRO DEFINITIONS ******************************/
+#define DRV_TIMER_INVALID_HANDLE        (-1)
 
 /***************************** TYPE DEFINITIONS *******************************/
+typedef int32_t Drv_TimerHandle;
+typedef void (*Drv_TimerCallback)(void);
 
-/**************************** FUNCTION PROTOTYPES *****************************/
+/*************************** FUNCTION DEFINITIONS *****************************/
+void Drv_Timer_Init(void);
+Drv_TimerHandle Drv_Timer_Create(Drv_TimerCallback userTimerCB);
+void Drv_Timer_Remove(Drv_TimerHandle timer);
+void Drv_Timer_Start(Drv_TimerHandle timer, uint32_t timeout);
+void Drv_Timer_Stop(Drv_TimerHandle timer, uint32_t timeout);
+void Drv_Timer_DelayUs(uint32_t microseconds);
+void Drv_Timer_DelayMs(uint32_t milliseconds);
 
-/******************************** VARIABLES ***********************************/
-
-/***************************** PUBLIC FUNCTIONS *******************************/
-
-/**************************** PRIVATE FUNCTIONS *******************************/
-
-void CPU_Init(void)
-{
-
-}
+#endif	/* __DRV_USERTIMER_H */

@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file BSP_Config.h
+ * @file Board_UnitTest.c
  *
  * @author Murat Cakmak
  *
- * @brief Mock configurations for Board Support Packet (BSP)
+ * @brief Unit test implementation for Board
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -35,7 +35,42 @@
  ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
-
+/* Include board source file for WHITE-BOX unit testing */
+#include "../Board.c"
+#include "Mock/mock_CPUCore.c"
+#include "unity.h"
 /***************************** MACRO DEFINITIONS ******************************/
 
-#define BOARD_ENABLE_LED_INTERFACE 			0
+/***************************** TYPE DEFINITIONS *******************************/
+
+/**************************** FUNCTION PROTOTYPES *****************************/
+
+/******************************** VARIABLES ***********************************/
+
+/**************************** INTERNAL FUNCTIONS ******************************/
+/**
+ * @brief Constructor Method for each test case
+ *
+ */
+void setUp(void)
+{
+}
+
+/**
+ * @brief Constructor Method for each test case
+ *
+ */
+void tearDown(void)
+{
+
+}
+
+/***************************** TEST FUNCTIONS *******************************/
+void test_BeforeBoardInit(void)
+{
+}
+
+void test_AfterBoardInit(void)
+{
+	Board_Init();
+}

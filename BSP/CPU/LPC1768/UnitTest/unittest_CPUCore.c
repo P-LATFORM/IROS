@@ -32,11 +32,11 @@
 #include "postypes.h"
 
 /* Let's include mock source files to simulate external module behaviours */
-#include "Mock/mockCPUCore_Assembly.c"
-#include "Mock/mockGPIO.c"
+#include "Mock/mock_CPUCore_Assembly.c"
+#include "Mock/mock_GPIO.c"
 
 /* Include CPU source file for WHITE-BOX unit testing */
-#include "../CPU.c"
+#include "../Drv_CPUCore.c"
 
 /* Include Unity Framework */
 #include "unity.h"
@@ -112,7 +112,7 @@ void taskStartPoint(void* arg)
  */
 void test_CPU_Init(void)
 {
-	CPU_Init();
+	Drv_CPUCore_Init();
 
 	TEST_ASSERT(1);
 }
@@ -125,7 +125,7 @@ void test_CPU_Init(void)
  */
 void test_CPU_Halt(void)
 {
-	CPU_Halt();
+	Drv_CPUCore_Halt();
 
 	/* CPU_Halt disables interrupts */
 	TEST_ASSERT((lpcMockObjects.flags.interrupt_disabled == 1));
@@ -141,7 +141,7 @@ void test_CPU_CS_Start(void)
 	/* Content of This TCB is not important for us. */
 	static reg32_t initialTCB;
 
-	CPU_CS_Start(&initialTCB);
+	Drv_CPUCore_CSStart(&initialTCB);
 
 	/* Check for internal global variables which keep next task (TCB)*/
 	TEST_ASSERT((currentTCB == &initialTCB));
@@ -165,7 +165,7 @@ void test_CPU_CS_YieldTo(void)
 	/* Content of This TCB is not important for us. */
 	static reg32_t newTCB;
 
-	CPU_CS_YieldTo(&newTCB);
+	Drv_CPUCore_CSYieldTo(&newTCB);
 
 	/* provided TCB should be kept in nextTCB object for next context switching */
 	TEST_ASSERT((nextTCB == &newTCB));
@@ -187,7 +187,7 @@ void test_CPU_CS_InitializeTaskStack(void)
 	reg32_t* topOfStack;
 	StackMap* stackMap;
 
-	topOfStack = CPU_CS_InitializeTaskStack((uint8_t*)testStack, sizeof(testStack), taskStartPoint);
+	topOfStack = Drv_CPUCore_CSInitializeTaskStack((uint8_t*)testStack, sizeof(testStack), taskStartPoint);
 
 	/* Cast Stack to Stack Map to access fields easy */
 	stackMap = (StackMap*)topOfStack;
@@ -243,7 +243,7 @@ void test_CPU_CS_StackAlignmentTest(void)
 		stackSize = sizeof(testStack) - i;
 
 		/* Give a raw and get top of initialized stack address */
-		topOfStack = CPU_CS_InitializeTaskStack(stackStartAddr, stackSize, taskStartPoint);
+		topOfStack = Drv_CPUCore_CSInitializeTaskStack(stackStartAddr, stackSize, taskStartPoint);
 
 		/* Check Address Alignment first. Address should be multiple of 8 */
 		TEST_ASSERT((((uintptr_t)topOfStack) & 0x7) == 0);

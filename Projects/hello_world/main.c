@@ -1,11 +1,10 @@
 /********************************* INCLUDES ***********************************/
 
+#include "Drv_GPIO.h"
+#include "Drv_UserTimer.h"
+
 #include "Kernel.h"
 #include "Board.h"
-#include "GPIO.h"
-#include "Timer.h"
-
-#include "Timer.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 

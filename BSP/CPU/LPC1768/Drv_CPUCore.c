@@ -35,11 +35,11 @@
  ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
-#include "CPU.h"
-#include "CPU_Internal.h"
+#include "Drv_CPUCore.h"
 
-#include "GPIO.h"
+#include "Drv_CPUCore_Internal.h"
 #include "LPC17xx.h"
+
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
@@ -131,7 +131,7 @@ INTERNAL void SwitchContext(void)
  */
 PRIVATE void ErrorOnTaskExit(void)
 {
-	CPU_Halt();
+	Drv_CPUCore_Halt();
 }
 
 /***************************** PUBLIC FUNCTIONS *******************************/
@@ -141,23 +141,20 @@ PRIVATE void ErrorOnTaskExit(void)
  * @param none
  * @return none
  */
-void CPU_Init(void)
+void Drv_CPUCore_Init(void)
 {
 	/*
 	 * TODO Implement Core Initialization.
 	 *
 	 * Currently Core initialization done by System_Init function before
-	 * main() function. We can move it here for coding consistancy.
+	 * main() function. We can move it here for coding consistency.
 	 */
-
-	/* Initialize GPIO HW */
-	GPIO_Init();
 }
 
 /*
  * Halts all system. 
  */
-void CPU_Halt(void)
+void Drv_CPUCore_Halt(void)
 {
 	/* Disable interrupts to avoid execution thru interrupts */
 	__disable_irq();
@@ -174,7 +171,7 @@ void CPU_Halt(void)
  *
  * @return none
  */
-void CPU_CS_Start(reg32_t* initialTCB)
+void Drv_CPUCore_CSStart(reg32_t* initialTCB)
 {
 	/* For the first time let's assign current and next task using initial TCB */
     currentTCB = initialTCB;
@@ -204,7 +201,7 @@ void CPU_CS_Start(reg32_t* initialTCB)
  * @param none
  * 
  */
-void CPU_CS_YieldTo(reg32_t* newTCB)
+void Drv_CPUCore_CSYieldTo(reg32_t* newTCB)
 {
 	/* Save TCB for task switching */
     nextTCB = newTCB;
@@ -228,7 +225,7 @@ void CPU_CS_YieldTo(reg32_t* newTCB)
  *
  * @return top of stack after initialization. 
  */
-PUBLIC reg32_t* CPU_CS_InitializeTaskStack(uint8_t* stack, uint32_t stackSize, TaskStartPoint taskStartPoint)
+PUBLIC reg32_t* Drv_CPUCore_CSInitializeTaskStack(uint8_t* stack, uint32_t stackSize, Drv_CPUCore_TaskStartPoint taskStartPoint)
 {
 
 	reg32_t* topOfStack = (reg32_t*)stack;
@@ -268,5 +265,4 @@ PUBLIC reg32_t* CPU_CS_InitializeTaskStack(uint8_t* stack, uint32_t stackSize, T
 
 	/* Return actual stack address for execution start */
 	return (reg32_t*)stackMap;
-
 }

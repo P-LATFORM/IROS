@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file mockCPUCore_Assembly.c
+ * @file BSP_Config.h
  *
  * @author Murat Cakmak
  *
- * @brief Mock Implementation for Assembly functions of CPU
+ * @brief Mock BSP Definitions
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -33,48 +33,23 @@
  * SOFTWARE.
  *
  ******************************************************************************/
+#ifndef __BSP_CONFIG_H
+#define __BSP_CONFIG_H
 
 /********************************* INCLUDES ***********************************/
 
-#include "CPU_Internal.h"
-#include "LPC17xx.h"
-
 /***************************** MACRO DEFINITIONS ******************************/
+
+#define BOARD_ENABLE_LED_INTERFACE 		0
 
 /***************************** TYPE DEFINITIONS *******************************/
 
 /**************************** FUNCTION PROTOTYPES *****************************/
-extern void SwitchContext(void);
 
 /******************************** VARIABLES ***********************************/
 
-/********************************** FUNCTIONS *********************************/
-/*
- *  Mock Implementation of PendSV ISR
- */
-void POS_PendSV_Handler(void)
-{
-	/* PendSV ISR normally calls SwitchContext() function to get next TCB */
-	SwitchContext();
-}
+/**************************** PRIVATE FUNCTIONS ******************************/
 
-/*
- * Mock Implementation of SVC ISR
- */
-void POS_SVC_Handler(void)
-{
-	/* Just set flag to inform about SVC Call */
-	lpcMockObjects.flags.svc_handler_call = 1;
-}
+/***************************** PUBLIC FUNCTIONS *******************************/
 
-/*
- * Mock Implementation of StartContextSwitching
- */
-void StartContextSwitching(void)
-{
-	/* Original function enables global interrupts before SVC ISR */
-	__enable_irq();
-
-	/* Jump to SVC. SVC ISR starts context switching */
-	POS_SVC_Handler();
-}
+#endif /* __BSP_CONFIG_H */

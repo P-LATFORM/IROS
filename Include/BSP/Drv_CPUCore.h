@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file Board_UnitTest.c
+ * @file Drv_CPUCore.h
  *
  * @author Murat Cakmak
  *
- * @brief Unit test implementation for Board
+ * @brief CPU Core Driver Interface
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -32,47 +32,67 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ******************************************************************************/
+ *******************************************************************************/
+#ifndef __DRV_CPUCORE_H
+#define __DRV_CPUCORE_H
 
 /********************************* INCLUDES ***********************************/
-/* Include board source file for WHITE-BOX unit testing */
-#include "../Board.c"
+#include "postypes.h"
 
-#include "Mock/mockCPU.c"
-
-#include "unity.h"
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
+typedef void(*Drv_CPUCore_TaskStartPoint)(void* arg);
 
-/**************************** FUNCTION PROTOTYPES *****************************/
-
-/******************************** VARIABLES ***********************************/
-
-/**************************** INTERNAL FUNCTIONS ******************************/
+/*************************** FUNCTION DEFINITIONS *****************************/
 /**
- * @brief Constructor Method for each test case
+* Initializes actual CPU and its components/peripherals.
+*
+* @param none
+* @return none
+*/
+void Drv_CPUCore_Init(void);
+
+/*
+ * Halts all system.
+ *
+ * @param none
+ * @return none
  *
  */
-void setUp(void)
-{
-}
+void Drv_CPUCore_Halt(void);
 
-/**
- * @brief Constructor Method for each test case
+/*
+ * Starts Context Switching
+ *  Configures HW for CS and starts first task
+ *
+ * @param initialTCB Initial (First) TCB (Task) for Context Switching
+ *
+ * @return none
+ */
+void Drv_CPUCore_CSStart(reg32_t* initialTCB);
+
+/*
+ * Switches running task to provided new TCB
+ *
+ * @param newTCB to be switched TCB
+ *
+ * @return none
  *
  */
-void tearDown(void)
-{
+void Drv_CPUCore_CSYieldTo(reg32_t* newTCB);
 
-}
+/*
+ * Initializes task stack
+ *
+ * @param stack to be initialized task stack
+ * @param stackSize Stack Size
+ * @param taskStartPoint Start Point (Function) of Task
+ *
+ * @return top of stack after initialization. 
+ *		   [IMP] Caller should keep top of stack address for new context switches.
+ */
+reg32_t* Drv_CPUCore_CSInitializeTaskStack(uint8_t* stack, uint32_t stackSize,
+										   Drv_CPUCore_TaskStartPoint startPoint);
 
-/***************************** TEST FUNCTIONS *******************************/
-void test_BeforeBoardInit(void)
-{
-}
-
-void test_AfterBoardInit(void)
-{
-	Board_Init();
-}
+#endif	/* __DRV_CPUCORE_H */

@@ -37,10 +37,9 @@
 /********************************* INCLUDES ***********************************/
 
 #include "Board.h"
-#include "CPU.h"
 
-#include "BSP_Config.h"
-
+#include "Drv_CPUCore.h"
+#include "BSPConfig.h"
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
@@ -63,7 +62,7 @@
 void Board_Init(void)
 {
 	/* Initialize CPU first */
-	CPU_Init();
+	Drv_CPUCore_Init();
     
 #if BOARD_ENABLE_LED_INTERFACE
 	Board_LedInit();

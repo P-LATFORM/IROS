@@ -59,7 +59,7 @@ UNITY_OUT_PATH = $(ROOT_PATH)/out/UnitTest/$(TEST_TARGET_NAME)
 # Test file name
 #	IMP : Unit test file must be name as unittest_<TARGET>
 #
-TEST_FILE_NAME = $(TEST_TARGET_NAME)_UnitTest
+TEST_FILE_NAME = unittest_$(TEST_TARGET_NAME)
 # Test source file
 TEST_FILE = $(TEST_FILE_NAME).c
 # Test runner file

@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file GPIO.h
+ * @file mockGPIO.c
  *
  * @author Murat Cakmak
  *
- * @brief GPIO Interface
+ * @brief Mock Implementation for GPIO Module
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -12,7 +12,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 Platform
+ * Copyright (c) 2016 P-OS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,26 +32,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *******************************************************************************/
-#ifndef __GPIO_H
-#define __GPIO_H
+ ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
-#include "postypes.h"
+#include "Drv_GPIO.h"
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
-/* GPIO Pin States */
-typedef enum
+
+/**************************** FUNCTION PROTOTYPES *****************************/
+
+/******************************** VARIABLES ***********************************/
+
+/********************************** FUNCTIONS *********************************/
+
+void Drv_GPIO_Init(void)
 {
-	GPIO_PINSTATE_LOW = 0,
-	GPIO_PINSTATE_HIGH = 1
-} GPIOPinState;
 
-/*************************** FUNCTION DEFINITIONS *****************************/
-void GPIO_Init(void);
-void GPIO_ConfigurePin(uint32_t port, uint32_t pin, uint32_t functionNo, uint32_t driveMode);
-void GPIO_WritePin(uint32_t port, uint32_t pin, GPIOPinState state);
-GPIOPinState GPIO_ReadPin(uint32_t port, uint32_t pin);
-
-#endif	/* __GPIO_H */
+}

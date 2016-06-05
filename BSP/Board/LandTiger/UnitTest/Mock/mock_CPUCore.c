@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file Timer.h
+ * @file mockCPU.c
  *
  * @author Murat Cakmak
  *
- * @brief Timer Interface for Hardware Abstraction Layer
+ * @brief Mock implementation for CPU
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -32,28 +32,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *******************************************************************************/
-#ifndef __TIMER_H
-#define __TIMER_H
+ ******************************************************************************/
 
 /********************************* INCLUDES ***********************************/
 
-#include "postypes.h"
-
 /***************************** MACRO DEFINITIONS ******************************/
-#define TIMER_INVALID_HANDLE        (-1)
 
 /***************************** TYPE DEFINITIONS *******************************/
-typedef int32_t TimerHandle;
-typedef void (*TimerCallback)(void);
 
-/*************************** FUNCTION DEFINITIONS *****************************/
-void Timer_Init(void);
-TimerHandle Timer_Create(TimerCallback userTimerCB);
-void Timer_Remove(TimerHandle timer);
-void Timer_Start(TimerHandle timer, uint32_t timeout);
-void Timer_Stop(TimerHandle timer, uint32_t timeout);
-void Timer_DelayUs(uint32_t microseconds);
-void Timer_DelayMs(uint32_t milliseconds);
+/**************************** FUNCTION PROTOTYPES *****************************/
 
-#endif	/* __TIMER_H */
+/******************************** VARIABLES ***********************************/
+
+/***************************** PUBLIC FUNCTIONS *******************************/
+
+/**************************** PRIVATE FUNCTIONS *******************************/
+
+void Drv_CPUCore_Init(void)
+{
+
+}
