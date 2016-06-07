@@ -186,14 +186,14 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>0</OptFeed>
+            <OptFeed>1</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -310,7 +310,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -408,14 +408,14 @@
               <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_GPIO.c</FilePath>
             </File>
             <File>
-              <FileName>Drv_UserTimer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_UserTimer.c</FilePath>
-            </File>
-            <File>
               <FileName>Drv_LED.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\BSP\Board\LandTiger\Drv_LED.c</FilePath>
+            </File>
+            <File>
+              <FileName>Drv_Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\BSP\CPU\LPC1768\Drv_Timer.c</FilePath>
             </File>
           </Files>
         </Group>

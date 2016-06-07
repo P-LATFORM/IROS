@@ -46,23 +46,26 @@
 
 #if ENABLE_DEBUG_ASSERT
 
-#ifdef WIN32
+	#ifdef WIN32
 
-#include <assert.h>
+		#include <assert.h>
 
-/* Breaks execution in case of fail */
-#define DEBUG_ASSERT(condition) { assert(condition); }
+		/* Breaks execution in case of fail */
+		#define DEBUG_ASSERT(condition) { assert(condition); }
 
-/* Breaks execution and print message in case of fail */
-#define DEBUG_ASSERT_MESSAGE(condition, message) { DEBUG_MESSAGE(message); assert(condition); }
+		/* Breaks execution and print message in case of fail */
+		#define DEBUG_ASSERT_MESSAGE(condition, message) { DEBUG_MESSAGE(message); assert(condition); }
 
-#else /* WIN32 */
+	#else /* WIN32 */
 
-#define DEBUG_ASSERT(condition)
-#define DEBUG_ASSERT_MESSAGE(condition, message)
+		#define DEBUG_ASSERT(condition)
+		#define DEBUG_ASSERT_MESSAGE(condition, message)
 
-#endif /* WIN32 */
+	#endif /* WIN32 */
 
+#else
+	#define DEBUG_ASSERT(condition)
+	#define DEBUG_ASSERT_MESSAGE(condition, message)
 #endif	/* ENABLE_DEBUG_ASSERT */
 /***************************** TYPE DEFINITIONS *******************************/
 

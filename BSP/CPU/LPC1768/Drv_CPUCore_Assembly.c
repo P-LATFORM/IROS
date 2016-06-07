@@ -145,14 +145,6 @@ ASSEMBLY_FUNCTION void POS_SVC_Handler(void)
 }
 
 /*
- * ISR for SysTick Exception
- *
- *  No need for now.
- *
- */
-ASSEMBLY_FUNCTION void POS_SysTick_Handler(void) { }
-
-/*
  * Starts context switching by calling SVC interrupt
  *
  * @param none

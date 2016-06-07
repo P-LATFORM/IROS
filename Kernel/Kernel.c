@@ -334,7 +334,7 @@ PUBLIC void OS_Yield(void)
  */
 int main(void)
 {
-    
+
 	/* Initialize Board First */
 	Board_Init();
  

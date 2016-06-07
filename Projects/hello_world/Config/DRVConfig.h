@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file BSPConfig.h
+ * @file DRVConfig.h
  *
  * @author Murat Cakmak
  *
- * @brief Project Specific BSP Configurations
+ * @brief Project Specific Driver Layer Configurations
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -33,26 +33,17 @@
  * SOFTWARE.
  *
  *******************************************************************************/
-#ifndef __BOARD_CONFIG_H
-#define __BOARD_CONFIG_H
+#ifndef __DRV_CONFIG_H
+#define __DRV_CONFIG_H
 
 /********************************* INCLUDES ***********************************/
 #include "postypes.h"
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
+/*
+ * Used HW Timer count in that projects.
+ */
+#define DRV_CONFIG_NUM_OF_USED_HW_TIMERS				(2)
 
-/* BOARD LED INTERFACE */
-#define BOARD_ENABLE_LED_INTERFACE 1
-
-/* BOARD LCD INTERFACE */
-#define BOARD_ENABLE_LCD_INTERFACE 0
-
-#if (BOARD_ENABLE_LED_INTERFACE && BOARD_ENABLE_LCD_INTERFACE)
-    #error "LED and LCD interfaces can not be used at same time!"
-#endif
-
-#define CPU_TIMER_MAX_TIMER_COUNT       (30)
-
-
-#endif	/* __BOARD_CONFIG_H */
+#endif	/* __DRV_CONFIG_H */

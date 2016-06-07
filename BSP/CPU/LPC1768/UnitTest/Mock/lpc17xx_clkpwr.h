@@ -46,7 +46,14 @@
 /** Power Control for Peripherals bit mask */
 #define CLKPWR_PCONP_BITMASK				0xEFEFF7DE
 
-#define	CLKPWR_PCONP_PCTIM0					((uint32_t)(1<<1))
+/** Timer/Counter 0 power/clock control bit */
+#define	 CLKPWR_PCONP_PCTIM0				((uint32_t)(1<<1))
+/* Timer/Counter 1 power/clock control bit */
+#define	 CLKPWR_PCONP_PCTIM1				((uint32_t)(1<<2))
+/** Timer 2 power/clock control bit */
+#define	 CLKPWR_PCONP_PCTIM2				((uint32_t)(1<<22))
+/** Timer 3 power/clock control bit */
+#define	 CLKPWR_PCONP_PCTIM3				((uint32_t)(1<<23))
 
 #define CLKPWR_PCLKSEL_BITMASK(p)			_SBF(p,0x03)
 

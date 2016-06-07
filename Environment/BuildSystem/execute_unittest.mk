@@ -139,7 +139,9 @@ SPLINT_SYMBOLS = \
 SPLINT_FLAGS = \
 	-export-local \
 	-varuse \
-	-predboolint
+	-predboolint \
+	-immediatetrans \
+	-paramuse
 
 ################################################################################
 #                    		     RULES                                   	   #

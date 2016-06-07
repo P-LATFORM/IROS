@@ -122,7 +122,7 @@
         <tRSysVw>1</tRSysVw>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
-        <nTsel>6</nTsel>
+        <nTsel>3</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -159,7 +159,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>
+          <Name>/</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -193,6 +193,11 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>nextTaskIndex</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>SystemCoreClock,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -318,8 +323,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\BSP\CPU\LPC1768\Drv_UserTimer.c</PathWithFileName>
-      <FilenameWithoutPath>Drv_UserTimer.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\BSP\Board\LandTiger\Drv_LED.c</PathWithFileName>
+      <FilenameWithoutPath>Drv_LED.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -330,8 +335,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\BSP\Board\LandTiger\Drv_LED.c</PathWithFileName>
-      <FilenameWithoutPath>Drv_LED.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\BSP\CPU\LPC1768\Drv_Timer.c</PathWithFileName>
+      <FilenameWithoutPath>Drv_Timer.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -359,7 +364,7 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>10</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Kernel\Scheduler\NonePreemptiveRR\Scheduler.c</PathWithFileName>
@@ -371,7 +376,7 @@
 
   <Group>
     <GroupName>Projects</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

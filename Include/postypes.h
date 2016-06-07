@@ -84,7 +84,11 @@
 	 * 	GCC for now. But we need to specify GCC for splint explicitly.
 	 */
 	#define INLINE                  __inline__
-	#define ALWAYS_INLINE           __attribute__((always_inline))
+    /*
+     * Unit tests show all warnings which break tests so let's use inline
+     * instead of always inline for gcc builds
+     */
+	#define ALWAYS_INLINE           __inline__   /* __attribute__((always_inline)) */
 	#define ASSEMBLY_FUNCTION
 	#define PACKED					__attribute__((packed))
     #define TYPEDEF_STRUCT_PACKED	typedef struct PACKED

@@ -47,6 +47,9 @@
 /** Bit location for reset on MRx match, n = 0 to 3 */
 #define TIM_RESET_ON_MATCH(n)    		(_BIT(((n * 3) + 1)))
 
+/** Bit location for stop on MRx match, n = 0 to 3 */
+#define TIM_STOP_ON_MATCH(n)     		(_BIT(((n * 3) + 2)))
+
 /** Timer Match control bit mask for specific channel*/
 #define	TIM_MCR_CHANNEL_MASKBIT(n)		((uint32_t)(7<<(n*3)))
 
@@ -58,6 +61,13 @@
 #define TIM_ENABLE						((uint32_t)(1<<0))
 
 #define TIM_IR_CLR(n) 					_BIT(n)
+
+/** Timer/counter enable bit */
+#define TIM_ENABLE						((uint32_t)(1<<0))
+/** Timer/counter reset bit */
+#define TIM_RESET						((uint32_t)(1<<1))
+/** Timer control bit mask */
+#define TIM_TCR_MASKBIT					((uint32_t)(3))
 
 /***************************** TYPE DEFINITIONS *******************************/
 

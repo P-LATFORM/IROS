@@ -47,7 +47,10 @@ Heap_Mem        SPACE   Heap_Size
 __heap_limit
 				IMPORT POS_SVC_Handler
 				IMPORT POS_PendSV_Handler
-				IMPORT POS_SysTick_Handler
+				IMPORT POS_TIMER0_IRQHandler
+				IMPORT POS_TIMER1_IRQHandler
+				IMPORT POS_TIMER2_IRQHandler
+				IMPORT POS_TIMER3_IRQHandler
 
                 PRESERVE8
                 THUMB
@@ -73,14 +76,14 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     DebugMon_Handler          ; Debug Monitor Handler
                 DCD     0                         ; Reserved
                 DCD     POS_PendSV_Handler            ; PendSV Handler
-                DCD     POS_SysTick_Handler           ; SysTick Handler
+                DCD     SysTick_Handler           ; SysTick Handler
 
                 ; External Interrupts
                 DCD     WDT_IRQHandler            ; 16: Watchdog Timer
-                DCD     TIMER0_IRQHandler         ; 17: Timer0
-                DCD     TIMER1_IRQHandler         ; 18: Timer1
-                DCD     TIMER2_IRQHandler         ; 19: Timer2
-                DCD     TIMER3_IRQHandler         ; 20: Timer3
+                DCD     POS_TIMER0_IRQHandler         ; 17: Timer0
+                DCD     POS_TIMER1_IRQHandler         ; 18: Timer1
+                DCD     POS_TIMER2_IRQHandler         ; 19: Timer2
+                DCD     POS_TIMER3_IRQHandler         ; 20: Timer3
                 DCD     UART0_IRQHandler          ; 21: UART0
                 DCD     UART1_IRQHandler          ; 22: UART1
                 DCD     UART2_IRQHandler          ; 23: UART2
