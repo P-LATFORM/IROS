@@ -62,6 +62,7 @@
 	#define ASSEMBLY_FUNCTION
 	#define PACKED
     #define TYPEDEF_STRUCT_PACKED	typedef struct
+    #define NO_INLINE
 
 #elif defined(__ARMCC_VERSION)
 
@@ -70,6 +71,7 @@
 	#define ASSEMBLY_FUNCTION       __asm
 	#define PACKED					__packed
     #define TYPEDEF_STRUCT_PACKED	PACKED typedef struct
+    #define NO_INLINE               __attribute__((noinline))
 
 #else /* GCC */
 
@@ -92,6 +94,7 @@
 	#define ASSEMBLY_FUNCTION
 	#define PACKED					__attribute__((packed))
     #define TYPEDEF_STRUCT_PACKED	typedef struct PACKED
+    #define NO_INLINE
 
 #endif
 

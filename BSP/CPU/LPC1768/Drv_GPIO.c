@@ -99,7 +99,7 @@ PRIVATE void SetPinRegister(reg32_t* regPtr, uint32_t port, uint32_t pin, uint32
  *
  * @return none
  */
-PRIVATE INLINE void SetPinFunction(uint32_t port, uint32_t pin, uint32_t function)
+PRIVATE ALWAYS_INLINE void SetPinFunction(uint32_t port, uint32_t pin, uint32_t function)
 {
     SetPinRegister(&LPC_PINCON->PINSEL0, port, pin, function);
 }
@@ -115,7 +115,7 @@ PRIVATE INLINE void SetPinFunction(uint32_t port, uint32_t pin, uint32_t functio
  *
  * @return none
  */
-PRIVATE INLINE void SetPinMode(uint32_t port, uint32_t pin, uint32_t driverMode)
+PRIVATE ALWAYS_INLINE void SetPinMode(uint32_t port, uint32_t pin, uint32_t driverMode)
 {
     SetPinRegister(&LPC_PINCON->PINMODE0, port, pin, driverMode);
 }

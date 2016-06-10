@@ -76,6 +76,17 @@
 #define OS_SCHEDULER_ADAPTIVE				(5)
 
 /*
+ * OS Task Creation Types
+ */
+#define OS_TASK_CREATION_STATIC             (1)
+#define OS_TASK_CREATION_DYNAMIC            (2)
+
+/*
+ * Allowed maximum task priority
+ */
+#define OS_TASK_PRIORITY_MAX                (64)
+
+/*
  * User Task
  *
  * User creates an task using this definition. 
@@ -88,16 +99,18 @@
  * @param StartPoint Start point (function) for user tasks. User task started 
  *		  from that function. 
  * @param StackSize Stack Size of User Task. 
+ * @param Priority of Tasks.
  * 
  */
-#define OS_USER_TASK(TaskName, StartPoint, StackSize) \
+#define OS_USER_TASK(TaskName, StartPoint, StackSize, Priority) \
 typedef struct \
 { \
     OSUserTaskStartPoint __task; \
+    uint32_t __priority; \
     uint32_t __stackSize; \
     uint8_t __stack[StackSize]; \
 } TaskName##Type; \
-static TaskName##Type TaskName = { StartPoint, StackSize, { 0 } };
+static TaskName##Type TaskName = { StartPoint, Priority, StackSize, { 0 } };
 
 /*
  * Prefix for User Task. 
@@ -109,7 +122,7 @@ static TaskName##Type TaskName = { StartPoint, StackSize, { 0 } };
  *
  * TODO Find a more suitable name than Prefix
  */
-#define USER_TASK_PREFIX(UserTask)	&(UserTask)
+#define OS_USER_TASK_PREFIX(UserTask)	&(UserTask)
 
 /*
  * User Task Start point Prototype.
@@ -133,7 +146,7 @@ static TaskName##Type TaskName = { StartPoint, StackSize, { 0 } };
  *			  IMP you should pass user task using USER_TASK_PREFIX() macro.
  * 
  */
-#define STARTUP_APPLICATIONS(...) \
+#define OS_STARTUP_APPLICATIONS(...) \
 static void* startupApplications[] = { __VA_ARGS__ };
 
 /***************************** TYPE DEFINITIONS *******************************/

@@ -60,20 +60,20 @@ OS_USER_TASK_START_POINT(MyTask2Func);
 /********************************* VARIABLES **********************************/
 
 /* User Task 1 with 256 stack size */
-OS_USER_TASK(MyTask1, MyTask1Func, 256);
+OS_USER_TASK(MyTask1, MyTask1Func, 256, 15);
 
 /* User Task 1 with 512 stack size */
-OS_USER_TASK(MyTask2, MyTask2Func, 512);
+OS_USER_TASK(MyTask2, MyTask2Func, 512, 15);
 
 /*
  * Startup Application.
  * After bootup and kernel initialization, kernel starts following applications
  *
  */
-STARTUP_APPLICATIONS
+OS_STARTUP_APPLICATIONS
 (
-    USER_TASK_PREFIX(MyTask1),
-    USER_TASK_PREFIX(MyTask2)
+    OS_USER_TASK_PREFIX(MyTask1),
+    OS_USER_TASK_PREFIX(MyTask2)
 )
 
 #endif	/* __USER_STARTUP_INFO_H */

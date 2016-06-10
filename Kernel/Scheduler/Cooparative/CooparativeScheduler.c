@@ -1,14 +1,10 @@
 /*******************************************************************************
  *
- * @file Scheduler.c
+ * @file CooparativeScheduler.c
  *
  * @author Murat Cakmak
  *
- * @brief Non-Preemptive Round Robin Scheduler. 
- *		- Most primitive task scheduler and acts like a single thread. 
- *		- It is also known as "SUPER LOOP". 
- *		- This scheduler different than cooperative scheduler because
- *		  a task does not yield itself when finished its job. 
+ * @brief Basic Cooparative Scheduler Implementation.
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -40,47 +36,74 @@
 
 #include "OSConfig.h"
 
-#if (OS_SCHEDULER == OS_SCHEDULER_NON_PREEMPTIVE_RR)
+#if (OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE)
 
 /********************************* INCLUDES ***********************************/
 #include "Kernel.h"
 #include "Scheduler.h"
 
+#include "Kernel_Internal.h"
+
 #include "Debug.h"
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
+/* Task count */
+#define TASK_COUNT              NUM_OF_USER_TASKS
 
 /***************************** TYPE DEFINITIONS *******************************/
-
+/*
+ * Cooparative Scheduler Internal Data Structure
+ */
+typedef struct
+{
+    /* Task pool for all user tasks */
+    TCB* taskPool;
+    /* Idle task TCB reference*/
+    TCB* idleTask;
+    /* Kernel callback to inform Kernel core about context switching */
+    SchedulerCSCallback csCallback;
+    /* Task index to track current task in cooparative scheduling */
+    int taskIndex;
+} CooparativeScheduler;
 /**************************** FUNCTION PROTOTYPES *****************************/
 
 /******************************** VARIABLES ***********************************/
-
+/*
+ * Cooparative scheduler internal data
+ */
+PRIVATE CooparativeScheduler scheduler;
 /**************************** PRIVATE FUNCTIONS *******************************/
 
-
 /***************************** PUBLIC FUNCTIONS *******************************/
-/**
+/*
  * Initializes Scheduler
- *
- * @param none
- *
- * @return 0 initialization successful success otherwise -1
  */
-void Scheduler_Init(void)
+PUBLIC void Scheduler_Init(TCB* tcbList, TCB* idleTCB, SchedulerCSCallback csCallback)
 {
+    scheduler.taskPool = tcbList;
+    scheduler.idleTask = idleTCB;
+    scheduler.csCallback = csCallback;
+    scheduler.taskIndex = 0;
 }
 
-/**
- * Initializes Scheduler
+/*
+ * Yields task in Scheduler side.
  *
- * @param none
- *
- * @return 0 scheduler started otherwise -1
+ *  Primitive implementation for Cooparative scheduling.
  */
-void Scheduler_Start(void)
+PUBLIC void Scheduler_Yield(void)
 {
+    TCB* nextTCB;
+
+    /* Get next (ready) task from task pool */
+    nextTCB = &scheduler.taskPool[scheduler.taskIndex];
+
+    /* Calculate task indexx for next yield */
+    scheduler.taskIndex = (scheduler.taskIndex + 1) % TASK_COUNT;
+
+    /* Inform kernel about next task */
+    scheduler.csCallback(nextTCB);
 }
 
-#endif /* #if (OS_SCHEDULER == OS_SCHEDULER_NON_PREEMPTIVE_RR) */
+#endif /* #if (OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE) */

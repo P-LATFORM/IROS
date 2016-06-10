@@ -6,6 +6,8 @@
 #include "Kernel.h"
 #include "Board.h"
 
+#include "OSConfig.h"
+
 /***************************** MACRO DEFINITIONS ******************************/
 
 /***************************** TYPE DEFINITIONS *******************************/
@@ -43,7 +45,9 @@ OS_USER_TASK_START_POINT(MyTask1Func)
         
         myDelay(VALL);
         cnt++;
+#if OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE
         OS_Yield();
+#endif /* OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE */
     }
 }
 
@@ -67,11 +71,14 @@ OS_USER_TASK_START_POINT(MyTask2Func)
         
         myDelay(VALL);
         cnt++;
+
+#if OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE
         OS_Yield();
+#endif /* OS_SCHEDULER == OS_SCHEDULER_COOPARATIVE */
     }
 }
 /***************************** PUBLIC FUNCTIONS *******************************/
 
 void OS_InitializeUserSpace(void)
-{    
+{
 }

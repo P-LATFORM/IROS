@@ -193,7 +193,7 @@
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>1</OptFeed>
+            <OptFeed>0</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -310,7 +310,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -428,9 +428,34 @@
               <FilePath>..\..\..\Kernel\Kernel.c</FilePath>
             </File>
             <File>
-              <FileName>Scheduler.c</FileName>
+              <FileName>AdaptiveScheduler.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\Kernel\Scheduler\NonePreemptiveRR\Scheduler.c</FilePath>
+              <FilePath>..\..\..\Kernel\Scheduler\Adaptive\AdaptiveScheduler.c</FilePath>
+            </File>
+            <File>
+              <FileName>Kernel_Internal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Kernel\Kernel_Internal.h</FilePath>
+            </File>
+            <File>
+              <FileName>Kernel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Kernel\Kernel.h</FilePath>
+            </File>
+            <File>
+              <FileName>Scheduler.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Kernel\Scheduler\Scheduler.h</FilePath>
+            </File>
+            <File>
+              <FileName>CooparativeScheduler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Kernel\Scheduler\Cooparative\CooparativeScheduler.c</FilePath>
+            </File>
+            <File>
+              <FileName>OSConfig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Config\OSConfig.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -443,9 +468,6 @@
               <FilePath>..\main.c</FilePath>
             </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>HAL</GroupName>
         </Group>
       </Groups>
     </Target>

@@ -4,7 +4,7 @@
  *
  * @author Murat Cakmak
  *
- * @brief Kernel Implementation. 
+ * @brief Kernel Core Implementation.
  *
  *		- Initializes Hardware
  *		- Initializes Kernel
@@ -42,114 +42,16 @@
 
 /********************************* INCLUDES ***********************************/
 #include "Kernel.h"
-
-#include "Drv_CPUCore.h"
+#include "Kernel_Internal.h"
 #include "Scheduler.h"
+
 #include "Board.h"
-#include "UserStartupInfo.h"
 
 #include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
-/*
- * Number of Kernel Tasks
- *  
- *  - We just have an idle task.
- */
-#define NUM_OF_KERNEL_TASKS				(1)
-
-/* 
- * Returns Numbers of User Tasks
- */
-#define NUM_OF_USER_TASKS \
-			(sizeof(startupApplications) / sizeof(void*))
-
-/*
- * Number of all task including kernel and user tasks
- */
-#define NUM_OF_ALL_TASKS \
-			(NUM_OF_KERNEL_TASKS + NUM_OF_USER_TASKS)
-
-/*
- * Size of idle stack. 
- *
- *  128 byte should be enough
- */
-#define SIZE_OF_IDLE_TASK_STACK			(128)
-
-/*
- * Kernel Task Creater Definition
- */
-#define KERNEL_TASK						OS_USER_TASK
-
-/*
- * Start Point Definition (Function Prototype) for Kernel Tasks
- */
-#define KERNEL_TASK_START_POINT			OS_USER_TASK_START_POINT
-
 /***************************** TYPE DEFINITIONS *******************************/
-
-/*
- * Base type for User Task
- * 
- *  Each static user task implements its type implicitly using OS_USER_TASK() 
- *  macro and specifies task specific features. e.g stack size. 
- *  We can handle task specific differencies using this base type.
- */
-typedef struct
-{
-	/* 
-	 * User Task start point. 
-	 *
-	 * User task starts with that point (function).
-	 * Program Counter (PC) is set to this value when task is started.
-	 */
-	OSUserTaskStartPoint taskStartPoint;
-	/* 
-	 * Stack size of User Task
-	 */
-	uint32_t stackSize;
-	/*
-	 * Start address of task stack. 
-	 *
-	 * We use this variable for just start point of user task.
-	 * Boundary check can be done by stackSize variable.
-	 *
-	 * NOTE : While each task has different stack size, we define size as 
-	 * '1' to get start point of user stack. It could be zero but zero-sized 
-	 * arrays are not portable and some platforms does not support it.
-	 *
-	 */
-	uint8_t stack[1];
-} UserTaskBaseType;
-
-/*
- * Task Control Block (TCB)
- *
- *  Includes all task specific information including required information for 
- *	Context Switching. 
- */
-typedef struct TCB
-{
-	/*
-	 * Actual top address of stack of task. 
-	 * 
-	 *  When a user task is started, task starts to use stack from end of
-	 *  stack in descending order. 
-	 *  When a task preempted, we need to save actual position of stack to 
-	 *  backup next execution of task. 
-	 *
-	 *	[IMP] This value must be first item in that data structure. When we pass
-	 *	a TCB to context switcher mechanism, HW looks for first address. 
-	 */
-	reg32_t* topOfStack;
-	
-	/*
-	 * User defined task Information. 
-	 */
-	UserTaskBaseType* userTaskInfo;
-} TaskInfo, TCB;
 
 /**************************** FUNCTION PROTOTYPES *****************************/
 /* 
@@ -158,50 +60,42 @@ typedef struct TCB
 PRIVATE OS_USER_TASK_START_POINT(IdleTaskFunc);
 
 /******************************** VARIABLES ***********************************/
-
-/*
- * User Space Applications which are started at startup
- * (after system initialization)
- * 
- * We use following user-defined container to access user applications
- */
-extern void* startupApplications[];
-
 /*
  * Idle Task
  * 
  *  We use idle task for side things which maintains system
  */
-KERNEL_TASK(IdleTask, IdleTaskFunc, SIZE_OF_IDLE_TASK_STACK);
+KERNEL_TASK(IdleTask, IdleTaskFunc, IDLE_TASK_STACK_SIZE, IDLE_TASK_PRIORITY);
+
+/*
+ * Task Pool.
+ * 
+ *  Keeps all kernel and user tasks.
+ */
+PRIVATE TCB kernelTaskPool[NUM_OF_USER_TASKS];
 
 /*
  * Task Pool. 
  * 
  *  Keeps all kernel and user tasks. 
  */
-PRIVATE TaskInfo kernelTaskPool[NUM_OF_ALL_TASKS];
+PRIVATE TCB idleTaskTCB;
 
 /**************************** PRIVATE FUNCTIONS ******************************/
 
 /*
- * TODO Remove
- * Hack code until we have a Scheduler. 
- * Below function returns all items sequentially from task pool. 
+ * Context Switching callback.
+ *
+ *  When a context switching is required, Scheduler notifies Kernel using
+ *  this callback.
  */
-#define Scheduler_GetNextTCB Hack_GetNextTCBFromScheduler
-PRIVATE TCB* Hack_GetNextTCBFromScheduler(void)
+PRIVATE void ContextSwitch_Callback(TCB* nextTCB)
 {
-    static int nextTaskIndex = 0;
-    TCB* nextTCB;
-    
-    nextTaskIndex = (nextTaskIndex + 1) % NUM_OF_ALL_TASKS;
-    
-    nextTCB = &kernelTaskPool[nextTaskIndex];
-    
-    return nextTCB;
+    /* Just switch to next TCB which specified from scheduler */
+    Kernel_SwitchTo((reg32_t*)nextTCB);
 }
 
-/**
+/*
  * Idle System Task Code Block 
  *
  */
@@ -219,14 +113,27 @@ PRIVATE KERNEL_TASK_START_POINT(IdleTaskFunc)
  * 
  * @param tcb to be initialized new task (TSB)
  */
-PRIVATE INLINE void InitializeNewTask(TCB* newTCB)
+PRIVATE ALWAYS_INLINE void InitializeNewTask(TCB* newTCB)
 {
 	UserTaskBaseType* userTask = newTCB->userTaskInfo;
     
 	/* Initialize stack of user task according to CPU architecture */
-	newTCB->topOfStack = Drv_CPUCore_CSInitializeTaskStack(userTask->stack,
-                                                           userTask->stackSize,
-                                                           userTask->taskStartPoint);
+	newTCB->topOfStack = Kernel_InitializeTaskStack(userTask->stack,
+                                                    userTask->stackSize,
+                                                    userTask->taskStartPoint);
+}
+
+/**
+ * Starts Kernel after initialization
+ * INLINED to avoid function call overhead.
+ *
+ * @param none
+ *
+ * @return none
+ */
+PRIVATE ALWAYS_INLINE void StartScheduling(void)
+{
+	Kernel_StartContextSwitching((reg32_t*)&idleTaskTCB);
 }
 
 /**
@@ -236,9 +143,8 @@ PRIVATE INLINE void InitializeNewTask(TCB* newTCB)
  *
  * @return none
  */
-PRIVATE INLINE void InitializeAllTasks(void)
+PRIVATE ALWAYS_INLINE void InitializeAllTasks(void)
 {
-	//UserTaskBaseType* userTask;
 	TCB* tcb = &kernelTaskPool[0];
 	int32_t taskIndex = 0;
 	/*
@@ -252,24 +158,19 @@ PRIVATE INLINE void InitializeAllTasks(void)
 	 */
     int* appPtr = (int*)startupApplications;
 
-	/* Loop for only User Tasks. Kernel Tasks are placed at the end of task pool. */
-	while (taskIndex < NUM_OF_USER_TASKS)
+	/* Initialize user tasks */
+    for (taskIndex = 0; taskIndex < NUM_OF_USER_TASKS; taskIndex++, tcb++, appPtr++)
 	{
 		/* Save User Task Info into TCB */
 		tcb->userTaskInfo = (UserTaskBaseType*)*appPtr;
 
 		/* Initialize New Task */
         InitializeNewTask(tcb);
-
-		/* Increase pointer to get references of next items */
-		tcb++;
-        appPtr++;
-		taskIndex++;
 	}
 
-	/* Put idle task to end of task pool and initialize */
-	tcb->userTaskInfo = (UserTaskBaseType*)USER_TASK_PREFIX(IdleTask);
-    InitializeNewTask(tcb);
+	/* Initialize idle task */
+	idleTaskTCB.userTaskInfo = (UserTaskBaseType*)OS_USER_TASK_PREFIX(IdleTask);
+    InitializeNewTask(&idleTaskTCB);
 }
 
 /**
@@ -280,48 +181,26 @@ PRIVATE INLINE void InitializeAllTasks(void)
  *
  * @return none
  */
-PRIVATE INLINE void InitializeKernel(void)
+PRIVATE ALWAYS_INLINE void InitializeKernel(void)
 {
 	/* Initialize all tasks before starting scheduling */
 	InitializeAllTasks();
 
 	/* Initialize Scheduler */
-	Scheduler_Init();
-
-	/*
-	 * TODO Other initializations
-	 */
+	Scheduler_Init(kernelTaskPool, &idleTaskTCB, ContextSwitch_Callback);
 
 	/* Initialize User Space */
 	OS_InitializeUserSpace();
 }
 
-/**
- * Starts Kernel after initialization
- * INLINED to avoid function call overhead.
- *
- * @param none
- *
- * @return none
- */
-PRIVATE INLINE void StartKernel(void)
-{
-	TCB* firstTask = &kernelTaskPool[0];
-
-	//kernelSettings.flags.schedulerRunning = 1;	
-
-	Drv_CPUCore_CSStart((reg32_t*)firstTask);
-
-	/* TODO When Scheduler is implemented */
-	//Scheduler_Start();
-}
-
 /***************************** PUBLIC FUNCTIONS *******************************/
 PUBLIC void OS_Yield(void)
 {
-    TCB* nextTCB = Scheduler_GetNextTCB();
-    
-    Drv_CPUCore_CSYieldTo((reg32_t*)nextTCB);
+    /*
+     * Just call the Scheduler Yield function, Scheduler also notifies
+     * about next task using callback function.
+     */
+    Scheduler_Yield();
 }
 
 /**
@@ -334,15 +213,14 @@ PUBLIC void OS_Yield(void)
  */
 int main(void)
 {
-
 	/* Initialize Board First */
 	Board_Init();
  
 	/* Initialize Kernel */
 	InitializeKernel();
 
-	/* Start Kernel */
-	StartKernel();
+	/* Start Task Scheduling */
+	StartScheduling();
 
 	return 0;
 }
