@@ -332,7 +332,7 @@
             <v6WtE>0</v6WtE>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>BOARD_ENABLE_LED_INTERFACE=1, UVISION_PROJECT</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\..\Include;..\..\..\Include\BSP;..\..\..\BSP;..\..\..\BSP\CPU\LPC1768\internal;..\..\..\Kernel;..\..\..\Kernel\Scheduler;..\..\..\Environment\Tools\Debug;..\Config</IncludePath>
             </VariousControls>
@@ -386,11 +386,6 @@
               <FileName>system_LPC17xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\BSP\CPU\LPC1768\internal\system_LPC17xx.c</FilePath>
-            </File>
-            <File>
-              <FileName>Board.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\BSP\Board\LandTiger\Board.c</FilePath>
             </File>
             <File>
               <FileName>Drv_CPUCore.c</FileName>

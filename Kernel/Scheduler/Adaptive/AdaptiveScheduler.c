@@ -221,6 +221,11 @@ PRIVATE SchedulerData scheduler;
  */
 PRIVATE const TaskInfo* const LAST_TASK = &scheduler.taskList[TASK_COUNT];
 
+/*
+ * Max Round Time
+ */
+PRIVATE const int32_t MaxRoundTime = AS_BURST_MAX_IN_US * TASK_COUNT;
+
 /**************************** PRIVATE FUNCTIONS ******************************/
 
 /*
@@ -329,8 +334,7 @@ PRIVATE ALWAYS_INLINE void RunRegulator(void)
 
         /* Boundary check and fix for burst correction */
 		state->burstCorrectionOld =
-            MATH_MIN((uint32_t)MATH_MAX(state->burstCorrectionOld, -(int32_t)state->tRound),
-					 (uint32_t)AS_BURST_MAX_IN_US * TASK_COUNT);
+            MATH_MIN((int32_t)MATH_MAX(state->burstCorrectionOld, -(int32_t)state->tRound), MaxRoundTime);
 
         /* Calculate Next Round time using burst correction value */
 		nextRoundTime = (float)(state->tRound + state->burstCorrectionOld);

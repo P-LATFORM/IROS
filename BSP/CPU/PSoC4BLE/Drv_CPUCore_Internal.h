@@ -1,10 +1,10 @@
 /*******************************************************************************
 *
-* @file SysConfig.h
+* @file DrvCPUCoreInternal.h
 *
 * @author Murat Cakmak
 *
-* @brief General System Config.
+* @brief CPU specific Internal Definitions
 *
 * @see https://github.com/P-LATFORM/P-OS/wiki
 *
@@ -12,7 +12,7 @@
 *
 * The MIT License (MIT)
 *
-* Copyright (c) 2016 Platform
+* Copyright (c) 2016 P-OS
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -32,23 +32,33 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 *
-*******************************************************************************/
-#ifndef __SYS_CONFIG_H
-#define __SYS_CONFIG_H
+******************************************************************************/
+
+#ifndef __DRV_CPUCORE_INTERNAL_H
+#define __DRV_CPUCORE_INTERNAL_H
 
 /********************************* INCLUDES ***********************************/
-#include "DRVConfig.h"
-#include "OSConfig.h"
+#include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
-#define SYSTEM_TIMER_KERNEL					0
-#define SYSTEM_TIMER_USER					1
-
-/* Debug Assertion */
-#define ENABLE_DEBUG_ASSERT					0
 
 /***************************** TYPE DEFINITIONS *******************************/
 
-/*************************** FUNCTION DEFINITIONS *****************************/
+/**************************** FUNCTION PROTOTYPES *****************************/
 
-#endif	/* __SYS_CONFIG_H */
+/******************************** VARIABLES ***********************************/
+
+/*************************** FUNCTION PROTOTYPES *****************************/
+/*
+ * Starts Context Switching on CPU.
+ *
+ * [IMP] To be switched task (currentTCB) must be set before calling this
+ * function.
+ *
+ * @param none
+ *
+ * @return none
+ */
+INTERNAL void StartContextSwitching(void);
+
+#endif /* __DRV_CPUCORE_INTERNAL_H */

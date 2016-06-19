@@ -193,6 +193,12 @@ PRIVATE ALWAYS_INLINE void InitializeKernel(void)
 	OS_InitializeUserSpace();
 }
 
+PRIVATE ALWAYS_INLINE void InitializeHW(void)
+{
+	/* Initialize CPU First */
+	Kernel_InitializeCPU();
+}
+
 /***************************** PUBLIC FUNCTIONS *******************************/
 PUBLIC void OS_Yield(void)
 {
@@ -203,7 +209,7 @@ PUBLIC void OS_Yield(void)
     Scheduler_Yield();
 }
 
-/**
+/*
  * Kernel Start point.
  * Kernel is the owner of main function to start itself after system power-up. 
  * Initialize whole system and starts Kernel.
@@ -213,8 +219,8 @@ PUBLIC void OS_Yield(void)
  */
 int main(void)
 {
-	/* Initialize Board First */
-	Board_Init();
+    /* Initialize HW First */
+    InitializeHW();
  
 	/* Initialize Kernel */
 	InitializeKernel();

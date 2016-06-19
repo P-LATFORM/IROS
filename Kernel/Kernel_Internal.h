@@ -106,6 +106,9 @@
  *  external modules.
  */
 
+/* Wrapper function definition to initialize CPU */
+#define Kernel_InitializeCPU            Drv_CPUCore_Init
+
 /* Wrapper function definition to start context switching */
 #define Kernel_StartContextSwitching    Drv_CPUCore_CSStart
 

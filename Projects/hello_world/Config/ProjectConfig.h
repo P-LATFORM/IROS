@@ -41,7 +41,7 @@
 /***************************** MACRO DEFINITIONS ******************************/
 
 /* Debug Assertion */
-#define ENABLE_DEBUG_ASSERT					1
+#define ENABLE_DEBUG_ASSERT					0
 
 /***************************** TYPE DEFINITIONS *******************************/
 

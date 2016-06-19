@@ -1,10 +1,10 @@
 /*******************************************************************************
  *
- * @file mockCPU.c
+ * @file Drv_LED.c
  *
  * @author Murat Cakmak
  *
- * @brief Mock implementation for CPU
+ * @brief LED Implementation to manage RDG LED on board.
  *
  * @see https://github.com/P-LATFORM/P-OS/wiki
  *
@@ -32,9 +32,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ******************************************************************************/
+ *******************************************************************************/
 
+#include "BSPConfig.h"
+
+#if BOARD_ENABLE_LED_INTERFACE
 /********************************* INCLUDES ***********************************/
+
+#include "Board.h"
+
+/* Header which includes all existing Cypress Headers */
+#include <project.h>
+
+#include "Drv_CPUCore.h"
+#include "BSPConfig.h"
+#include "postypes.h"
 
 /***************************** MACRO DEFINITIONS ******************************/
 
@@ -44,11 +56,31 @@
 
 /******************************** VARIABLES ***********************************/
 
+/**************************** PRIVATE FUNCTIONS ******************************/
+
 /***************************** PUBLIC FUNCTIONS *******************************/
 
-/**************************** PRIVATE FUNCTIONS *******************************/
-
-void Drv_CPUCore_Init(void)
+void Board_LedInit(void)
 {
 
 }
+
+void Board_LedOn(uint32_t ledNo)
+{
+    switch (ledNo)
+    {
+        case 0: LED_RED_Write(0); break;
+        default: break;
+    }
+}
+
+void Board_LedOff(uint32_t ledNo)
+{
+    switch (ledNo)
+    {
+        case 0: LED_RED_Write(1); break;
+        default: break;
+    }
+}
+
+#endif	/* BOARD_ENABLE_LED_INTERFACE */

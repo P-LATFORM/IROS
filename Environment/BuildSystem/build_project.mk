@@ -82,7 +82,7 @@ PROJECT_OBJS_OUT_PATH= $(PROJECT_OUT_PATH)/obj
 # Get all Kernel Source files except Unit Test files
 KERNEL_SRC_FILES := $(shell /usr/bin/find $(KERNEL_PATH) -mindepth 1 -maxdepth 6 -name "*.c" ! -path "*UnitTest*")
 # Get all Project (Application) Source files except Unit Test files
-PROJECT_SRC_FILES := $(shell /usr/bin/find $(PROJECT_PATH) -mindepth 1 -maxdepth 6 -name "*.c" ! -path "*UnitTest*")
+PROJECT_SRC_FILES := $(shell /usr/bin/find $(PROJECT_PATH) -mindepth 1 -maxdepth 6 -name "*.c" ! -path "*PSoCCreator*")
 
 # Include CPU, Board and Kernel makefiles to get specific rules
 include $(CPU_PATH)/module.mk
