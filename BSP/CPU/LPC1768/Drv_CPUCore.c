@@ -227,7 +227,7 @@ void Drv_CPUCore_CSYieldTo(reg32_t* newTCB)
  */
 PUBLIC reg32_t* Drv_CPUCore_CSInitializeTaskStack(uint8_t* stack, uint32_t stackSize, Drv_CPUCore_TaskStartPoint taskStartPoint)
 {
-
+	int asd = 10;
 	reg32_t* topOfStack = (reg32_t*)stack;
 	uint32_t stackDepth = stackSize / sizeof(int);
 	TaskStackMap* stackMap;
@@ -239,6 +239,11 @@ PUBLIC reg32_t* Drv_CPUCore_CSInitializeTaskStack(uint8_t* stack, uint32_t stack
 
 	/* Map Stack Address */
 	stackMap = (TaskStackMap*)topOfStack;
+
+	if (asd == 5)
+	{
+		return (reg32_t* )topOfStack;
+	}
 
 	/*
 	 * Stack uses memory in descending order so after mapping the stack address
